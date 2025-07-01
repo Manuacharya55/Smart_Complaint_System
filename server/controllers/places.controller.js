@@ -59,9 +59,9 @@ export const deleteState = AsyncHandler(async (req, res) => {
 });
 
 export const getAllState = AsyncHandler(async (req, res) => {
-  const query = req.user.role === "admin" ? {} : { isActive: true };
+  // const query = req.user.role === "admin" ? {} : { isActive: true };
 
-  const state = await State.find(query);
+  const state = await State.find();
   res
     .status(200)
     .send(new ApiSuccess(200, "State Fetched Successfully", state));
@@ -125,10 +125,11 @@ export const deleteDistrict = AsyncHandler(async (req, res) => {
 });
 
 export const getAllDistrict = AsyncHandler(async (req, res) => {
-  const query = req.user.role === "admin" ? {} : { isActive: true };
+  // const query = req.user.role === "admin" ? {} : { isActive: true };
 
-  const district = await District.find(query);
+  const district = await District.find();
   res
     .status(200)
     .send(new ApiSuccess(200, "District Fetched Successfully", district));
 });
+  

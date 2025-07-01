@@ -5,6 +5,10 @@ const StateSchema = new Schema({
         type:String,
         required:true,
     },
+    isActive:{
+type:Boolean,
+default:true
+    },
     districts:[{
         type: mongoose.Schema.Types.ObjectId,
         ref:"District"

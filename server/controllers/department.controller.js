@@ -48,8 +48,8 @@ export const deleteDepartment = AsyncHandler(async (req, res) => {
   if (!existingDepartment) throw new ApiError(400, "No Such Department Exists");
 
   const department = await Department.findByIdAndUpdate(deptId, {
-    $set: { isActive: !existingDepartment.isActive },
-  });
+    $set: { isActive: !existingDepartment.isActive }
+  },{new:true});
 
   res
     .status(200)
@@ -58,8 +58,8 @@ export const deleteDepartment = AsyncHandler(async (req, res) => {
 
 // 4. get all department
 export const getAllDepartment = AsyncHandler(async (req,res)=>{
-    const query = req.user.role === "admin" ? {} : {isActive : true};
+    // const query = req.user.role === "admin" ? {} : {isActive : true};
 
-    const department = await Department.find(query);
+    const department = await Department.find();
     res.status(200).send(new ApiSuccess(200,"Department Fetched Successfully",department))
 });

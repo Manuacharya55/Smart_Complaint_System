@@ -10,7 +10,8 @@ const DistrictSchema = new Schema({
         ref:"State"
     },
     isActive:{
-        type:Boolean
+        type:Boolean,
+        default:true
     }
 });
 
