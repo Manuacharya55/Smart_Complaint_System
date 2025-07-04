@@ -1,10 +1,9 @@
-class ApiSuccess{
-    constructor(statuscode,message,data){
-        this.statuscode = statuscode;
-        this.success = true;
-        this.message = message;
-        this.data = data;
-    }
-}
 
-export default ApiSuccess;
+export class ApiSuccess {
+  constructor(statusCode, message, data) {
+    this.statusCode = statusCode;
+    this.success = true;
+    this.message = message;
+    this.data = data;
+  }
+}

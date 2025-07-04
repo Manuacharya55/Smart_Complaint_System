@@ -1,0 +1,180 @@
+#container {
+  width: 100%;
+  max-width: 1000px;
+
+  margin: auto;
+  display: block;
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  background-color: var(---secondary-color);
+  border-radius: 10px;
+  overflow: hidden;
+  border-collapse: collapse;
+  text-align: left;
+  border: 1px solid var(---support-text);
+}
+
+thead {
+  background-color: var(---component-color);
+  color: var(---heading-text-color);
+  width: 100%;
+}
+
+tbody {
+  color: var(---support-text);
+  width: 100%;
+}
+
+tbody tr {
+  border-bottom: 1px solid var(---support-text);
+}
+
+tbody tr:nth-child(odd) {
+  background-color: var(---primary-color);
+}
+td {
+  padding: 10px 20px;
+}
+
+th {
+  padding: 15px 20px;
+}
+
+table button {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  margin-right: 10px;
+  color: var(---heading-text-color);
+}
+
+table button#edit {
+  background-color: var(---component-color);
+}
+
+table button#delete {
+  background-color: red;
+}
+
+/* Add Department Section */
+#add-department {
+  background-color: var(---secondary-color);
+  padding: 20px;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+#add-department form{
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+#add-department h1 {
+  text-align: center;
+  font-size: 3rem;
+  color: var(---heading-text-color);
+}
+
+#add-department input{
+    padding: 10px;
+    background-color: transparent;
+    border: 1px solid var(---support-text);
+    border-radius: 8px;
+    color: var(---heading-text-color);
+}
+
+#add-department select{
+    padding: 10px;
+    background-color: transparent;
+    border: 1px solid var(---support-text);
+    border-radius: 8px;
+    color: var(---heading-text-color);
+}
+
+#add-department option{
+    background-color: var(---secondary-color);
+    color: var(---heading-text-color);
+}
+
+#add-department button{
+    padding: 10px;
+    background-color: var(---component-color);
+    color: var(---heading-text-color);
+    border-radius: 8px;
+    border: none;
+}
+
+/* DashBoard _ CSS */
+#tile-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+#tile{
+  width: 100%;
+  max-width: 300px;
+  background-color: var(---secondary-color);
+  border: 1px solid var(---support-text);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+#tile h1{
+  font-size: 5rem;
+  color: var(---heading-text-color);
+}
+
+#tile p{
+  font-size: 1.5rem;
+  color: var(---support-text);
+}
+
+#dashbaord-links{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+  padding: 20px;
+}
+
+#links{
+  padding: 20px;
+  background-color: var(---secondary-color);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+#links svg{
+  font-size: 3rem;
+  color: var(---heading-text-color);
+}
+
+#dashbaord-links a{
+  text-decoration: none;
+}
+#links p{
+  font-size: 1.5rem;
+  color: var(---support-text);
+}

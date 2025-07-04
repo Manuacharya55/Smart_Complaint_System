@@ -1,17 +1,11 @@
-import React, { useEffect } from "react";
-import Table from "../../components/admin/Table";
-import { useAuth } from "../../context/UserContext";
-import { useState } from "react";
-import {
-  deleteRequest,
-  getRequest,
-  patchRequest,
-  postRequest,
-} from "../../services/Api";
-import toast from "react-hot-toast";
+import React, { useEffect, useState } from 'react'
+import { useAuth } from '../../context/UserContext';
+import Table from '../../components/admin/Table';
+import toast from 'react-hot-toast';
+import { deleteRequest, getRequest, patchRequest, postRequest } from '../../services/Api';
 
-const Department = () => {
-  const { user } = useAuth();
+const Place = () => {
+const { user } = useAuth();
   const [data, setData] = useState("");
   const [department, setDepartment] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +27,7 @@ const Department = () => {
 
     if (isEditing) {
       response = await patchRequest(
-        "department/",
+        "place/",
         user?.token,
         {
           name: data,
@@ -42,7 +36,7 @@ const Department = () => {
       );
       setIsEditing(false);
     } else {
-      response = await postRequest("department/", user?.token, {
+      response = await postRequest("place/", user?.token, {
         name: data,
       });
     }
@@ -60,7 +54,7 @@ const Department = () => {
   const fetchData = async () => {
     if (!user) return;
 
-    const response = await getRequest("department/", user?.token);
+    const response = await getRequest("place/", user?.token);
     setDepartment(response.data);
     setIsLoading(false)
     console.log(response.data);
@@ -75,7 +69,7 @@ const Department = () => {
   const handleDelete = async (id) => {
     if (!user?.token) return;
 
-    const response = await deleteRequest("department/", user?.token, id);
+    const response = await deleteRequest("place/", user?.token, id);
     setDepartment((prev) =>
       prev.map((curEle) => (curEle._id == id ? response.data : curEle))
     );
@@ -90,9 +84,8 @@ const Department = () => {
 
   return (
     <div id="container">
-      
       <div id="add-department">
-        <h1>Add Department</h1>
+        <h1>Add Place</h1>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -100,10 +93,10 @@ const Department = () => {
             id="name"
             value={data}
             onChange={handleChange}
-            placeholder="Enter Department Name"
+            placeholder="Enter Place Name"
           />
           <button disabled={isClicked} type="submit">
-            {isClicked ? "Processing" : "Add Department"}
+            {isClicked ? "Processing" : "Add Place"}
           </button>
         </form>
       </div>
@@ -112,12 +105,11 @@ const Department = () => {
       ) : (
         <Table
           data={department}
-          objkey={["Department Id", "Name", "Employee Count", "Operation"]}
+          objkey={["Place Id", "Name", "Operation"]}
           renderRow={(item, index) => (
             <tr key={item._id}>
               <td>{item._id}</td>
               <td>{item.name}</td>
-              <td>{item.members?.length || 0}</td>
               <td>
                 <button id="edit" onClick={() => handleEdit(item._id)}>
                   Edit
@@ -134,4 +126,5 @@ const Department = () => {
   );
 };
 
-export default Department;
+
+export default Place

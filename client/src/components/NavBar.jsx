@@ -1,17 +1,25 @@
-import React from "react";
-import { RiHome9Line } from "react-icons/ri";
-import { MdList } from "react-icons/md";
-import { NavLink } from "react-router-dom";
-const NavBar = ({links}) => {
-  return (
-      <div id="navbar-holder">
-        <nav>
-          <ul>
-            {links.map((curEle)=> <li><NavLink to={curEle.link}>{curEle.icon}</NavLink></li>)}
-          </ul>
-        </nav>
-      </div>
-  );
-};
+import React from 'react'
+import { TbBuilding, TbHome, TbListDetails, TbLocation, TbUsers } from 'react-icons/tb'
+import { NavLink } from 'react-router-dom'
 
-export default NavBar;
+const NavBar = ({routes}) => {
+
+  return (
+    <div id="navbar">
+        <nav>
+            <ul>
+                {routes.map((route, index) => (
+                    <li key={index}>
+                        <NavLink to={route.path} className={({ isActive }) => (isActive ? "active" : "")}>
+                            {route.icon}
+                            <div>{route.label}</div>
+                        </NavLink>
+                    </li>
+                ))}
+            </ul>
+        </nav>
+    </div>
+  )
+}
+
+export default NavBar

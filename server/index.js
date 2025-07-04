@@ -1,28 +1,39 @@
 import express from "express";
-import connectDB from "./db/index.js";
-import GlobalErrorHandler from "./utils/GlobalError.js";
-import adminRouter from "./router/admin.router.js";
-import authRouter from "./router/auth.router.js";
+import cors from "cors";
 import dotenv from "dotenv";
+import { connectDB } from "./database/index.js";
+import { GlobalErrorHandler } from "./utils/GlobalError.js";
 dotenv.config();
 
-import cors from "cors"
 const app = express();
+const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors());
 
+
+import AuthRouter from "./router/Auth.route.js";
+import DepartmentRouter from "./router/Department.route.js";
+import PlaceRouter from "./router/Place.route.js";
+import UserRouter from "./router/Users.route.js";
+
+app.use("/api/auth",AuthRouter)
+app.use("/api/department",DepartmentRouter)
+app.use("/api/place",PlaceRouter)
+app.use("/api/users",UserRouter)
+
+
+app.use(GlobalErrorHandler)
+
+
 connectDB()
   .then(() => {
-    app.listen(process.env.PORT, () => {
-      console.log("Server is running on port");
+    app.listen(PORT, () => {
+      console.log(`http://localhost:${PORT}`);
     });
   })
-  .catch((e) => {
-    console.log(e);
-    process.exit();
+  .catch((err) => {
+    process.exit(0);
   });
 
-app.use("/api/admin", adminRouter);
-app.use("/api/auth", authRouter);
 
-app.use(GlobalErrorHandler);
+

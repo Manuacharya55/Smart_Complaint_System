@@ -1,19 +1,20 @@
-import mongoose, { Schema,model } from "mongoose";
+import {Schema,model} from "mongoose";
 
 const DepartmentSchema = new Schema({
     name:{
         type:String,
-        required:true,
+        required:true
     },
     isActive:{
         type:Boolean,
         default:true
     },
-    workers:[{
-        type: mongoose.Schema.Types.ObjectId,
+    members:[{
+        type:Schema.Types.ObjectId,
         ref:"User"
     }]
-});
+},{timestamps:true});
 
 const Department = model("Department",DepartmentSchema);
+
 export default Department;
