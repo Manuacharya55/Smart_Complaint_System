@@ -15,11 +15,13 @@ import AuthRouter from "./router/Auth.route.js";
 import DepartmentRouter from "./router/Department.route.js";
 import PlaceRouter from "./router/Place.route.js";
 import UserRouter from "./router/Users.route.js";
+import ComplaintRouter from "./router/Complaint.route.js";
 
 app.use("/api/auth",AuthRouter)
 app.use("/api/department",DepartmentRouter)
 app.use("/api/place",PlaceRouter)
 app.use("/api/users",UserRouter)
+app.use("/api/complaint",ComplaintRouter)
 
 
 app.use(GlobalErrorHandler)
