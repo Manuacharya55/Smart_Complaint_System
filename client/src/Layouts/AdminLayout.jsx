@@ -1,6 +1,13 @@
 import React from "react";
 import NavBar from "../components/NavBar";
-import { TbBuilding, TbHome, TbListDetails, TbLocation, TbUsers } from "react-icons/tb";
+import {
+  TbBuilding,
+  TbHome,
+  TbListDetails,
+  TbLocation,
+  TbLogout,
+  TbUsers,
+} from "react-icons/tb";
 
 const AdminLayout = ({ children }) => {
   let routes = [
@@ -28,6 +35,11 @@ const AdminLayout = ({ children }) => {
       path: "/complaints",
       icon: <TbListDetails />,
       label: "Complaints",
+    },
+    {
+      path: "/logout",
+      icon: <TbLogout />,
+      label: "Logout",
     },
   ];
   return (

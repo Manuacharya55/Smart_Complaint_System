@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import { useAuth } from '../../context/UserContext';
-import Table from '../../components/admin/Table';
-import toast from 'react-hot-toast';
-import { deleteRequest, getRequest, patchRequest, postRequest } from '../../services/Api';
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../../context/UserContext";
+import Table from "../../components/admin/Table";
+import toast from "react-hot-toast";
+import {
+  deleteRequest,
+  getRequest,
+  patchRequest,
+  postRequest,
+} from "../../services/Api";
+import { TbPencil, TbToggleLeftFilled, TbToggleRightFilled } from "react-icons/tb";
 
 const Place = () => {
-const { user } = useAuth();
+  const { user } = useAuth();
   const [data, setData] = useState("");
   const [department, setDepartment] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -18,32 +24,39 @@ const { user } = useAuth();
   };
 
   const handleSubmit = async (e) => {
-    setIsClicked(true);
     e.preventDefault();
-    let response;
+    setIsClicked(true);
+
     if (!user?.token) {
+      setIsClicked(false);
       return;
     }
+
+    let response;
 
     if (isEditing) {
       response = await patchRequest(
         "place/",
-        user?.token,
-        {
-          name: data,
-        },
+        user.token,
+        { name: data },
         id
       );
       setIsEditing(false);
     } else {
-      response = await postRequest("place/", user?.token, {
-        name: data,
-      });
+      response = await postRequest("place/", user.token, { name: data });
     }
 
     if (response?.success) {
       toast.success(response.message);
-      setDepartment((prev) => [...prev, response.data]);
+      if (isEditing) {
+        setDepartment((prev) =>
+          prev.map((curEle) =>
+            curEle._id === (response.data?._id || id) ? response.data : curEle
+          )
+        );
+      } else {
+        setDepartment((prev) => [...prev, response.data]);
+      }
       setData("");
     } else {
       toast.error(response?.message);
@@ -56,7 +69,7 @@ const { user } = useAuth();
 
     const response = await getRequest("place/", user?.token);
     setDepartment(response.data);
-    setIsLoading(false)
+    setIsLoading(false);
     console.log(response.data);
   };
 
@@ -70,9 +83,15 @@ const { user } = useAuth();
     if (!user?.token) return;
 
     const response = await deleteRequest("place/", user?.token, id);
-    setDepartment((prev) =>
-      prev.map((curEle) => (curEle._id == id ? response.data : curEle))
-    );
+
+    if(response.success){
+      toast.success(response.message)
+      setDepartment((prev) =>
+        prev.map((curEle) => (curEle._id == id ? response.data : curEle))
+      );
+    }else{
+      toast.error(response.message)
+    }
   };
 
   const handleEdit = async (userid) => {
@@ -106,17 +125,23 @@ const { user } = useAuth();
         <Table
           data={department}
           objkey={["Place Id", "Name", "Operation"]}
-          renderRow={(item, index) => (
-            <tr key={item._id}>
-              <td>{item._id}</td>
-              <td>{item.name}</td>
+          renderRow={(curEle, index) => (
+            <tr key={curEle._id}>
+              <td>{curEle._id}</td>
+              <td>{curEle.name}</td>
               <td>
-                <button id="edit" onClick={() => handleEdit(item._id)}>
-                  Edit
-                </button>
-                <button id="delete" onClick={() => handleDelete(item._id)}>
-                  {item.isActive ? "De-Activate" : "Activate"}
-                </button>
+                <div id="btn-holder">
+                  <button id="edit" onClick={() => handleEdit(curEle._id)}>
+                    <TbPencil />
+                  </button>
+                  <button id="delete" onClick={() => handleDelete(curEle._id)}>
+                    {curEle.isActive ? (
+                      <TbToggleLeftFilled />
+                    ) : (
+                      <TbToggleRightFilled />
+                    )}
+                  </button>
+                </div>
               </td>
             </tr>
           )}
@@ -126,5 +151,4 @@ const { user } = useAuth();
   );
 };
 
-
-export default Place
+export default Place;

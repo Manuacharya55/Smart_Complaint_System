@@ -12,6 +12,10 @@ import Register from "./pages/Register";
 import {BrowserRouter,Routes,Route} from "react-router-dom"
 import UploadComplaint from "./pages/user/UploadComplaint";
 import UserComplaints from "./pages/user/UserComplaints";
+import DepartmentLayout from "./layouts/DepartmentLayout";
+import Complaints from "./pages/department/Complaints";
+import SingleComplaint from "./pages/department/SingleComplaint";
+import Logout from "./pages/Logout";
 
 const App = () => {
   return <BrowserRouter>
@@ -19,7 +23,7 @@ const App = () => {
     <Route path="/" element={<Register/>}/>
     <Route path="/register" element={<Register/>}/>
     <Route path="/login" element={<Login/>}/>
-    <Route path="/image" element={<Image/>}/>
+    <Route path="/logout" element={<Logout/>}/>
 
 
     <Route path="/department" element={<AdminLayout><Department/></AdminLayout>}/>
@@ -31,6 +35,9 @@ const App = () => {
     
     <Route path="/upload-complaint" element={<UserLayout><UploadComplaint/></UserLayout>}/>
     <Route path="/user-complaints" element={<UserLayout><UserComplaints/></UserLayout>}/>
+
+    <Route path="/department-complaints" element={<DepartmentLayout><Complaints/></DepartmentLayout>}/>
+    <Route path="/department-complaint/:id" element={<DepartmentLayout><SingleComplaint/></DepartmentLayout>}/>
 
   </Routes>
   </BrowserRouter>

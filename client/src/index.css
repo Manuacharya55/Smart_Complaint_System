@@ -170,6 +170,8 @@ nav ul li:hover div {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    border: 1px solid white;
   }
 
 

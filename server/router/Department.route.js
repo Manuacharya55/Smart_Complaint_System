@@ -1,6 +1,6 @@
 import express from "express";
 
-import { verifyJWT } from "../middlewares/Auth.middleware.js";
+import { verifyAdmin, verifyJWT } from "../middlewares/Auth.middleware.js";
 import {
   addDepartment,
   deleteDepartment,
@@ -11,12 +11,12 @@ import {
 
 const router = express.Router();
 
-router.route("/").get(getAllDepartment).post(addDepartment);
+router.route("/").get(verifyJWT,getAllDepartment).post(verifyJWT,verifyAdmin,addDepartment);
 
 router
   .route("/:id")
-  .get(getSingleDepartment)
-  .patch(updateDepartment)
-  .delete(deleteDepartment);
+  .get(verifyJWT,verifyAdmin,getSingleDepartment)
+  .patch(verifyJWT,verifyAdmin,updateDepartment)
+  .delete(verifyJWT,verifyAdmin,deleteDepartment);
 
 export default router;

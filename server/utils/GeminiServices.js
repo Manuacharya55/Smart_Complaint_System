@@ -2,15 +2,12 @@ import { GoogleGenAI } from "@google/genai";
 import axios from "axios";
 import dotenv from "dotenv";
 
-// ✅ Load .env variables
-dotenv.config({ path: "./.env" }); // Change path if your .env is in another directory
+dotenv.config({ path: "./.env" }); 
 
-// ✅ Initialize Gemini using API Key
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
-// ✅ Helper to fetch image and convert to Base64
 const fetchImageAsBase64 = async (url) => {
   try {
     const response = await axios.get(url, {
@@ -27,7 +24,6 @@ const fetchImageAsBase64 = async (url) => {
   }
 };
 
-// ✅ Analyze image with Gemini
 export const imageAnalysis = async (imageURL, departmentsArray) => {
   try {
     const imageBase64 = await fetchImageAsBase64(imageURL);
@@ -55,10 +51,10 @@ IMPORTANT:
 Respond ONLY in this strict JSON format:
 
 {
-  "description": "lengthy description of the issue",
+  "description": "10 lines of description of the issue",
   "problemEnum": "Quick Fix" | "Moderate" | "Easy",
   "department": "department name" or null,
-  "problem": "short description of the problem"
+  "problem": "one liner title for problem"
 }`.trim(),
   },
   {
@@ -76,7 +72,7 @@ Respond ONLY in this strict JSON format:
     const cleanJson = rawText.replace(/```json|```/g, "").trim();
 
     console.log(cleanJson);
-    return JSON.parse(cleanJson); // ✅ Final structured object
+    return JSON.parse(cleanJson);
   } catch (error) {
     console.error("❌ Gemini API error:", error);
     return null;

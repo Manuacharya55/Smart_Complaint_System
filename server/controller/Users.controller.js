@@ -2,6 +2,8 @@ import User from "../models/User.model.js";
 import { ApiSuccess } from "../utils/ApiSuccess.js";
 import {AsyncHandler} from "../utils/AsyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
+import { ObjectId } from "mongodb";
+import Department from "../models/Department.model.js";
 
 export const allUsers = AsyncHandler(async (req, res) => {
   const users = await User.find().populate("department");
@@ -21,7 +23,15 @@ export const addUsers = AsyncHandler(async (req, res) => {
     throw new ApiError(400, "User Already Exists");
   }
 
+  const obj = new ObjectId(department);
+  const existingDepertment = await Department.findById(obj);
+
+
   const user = await User.create({ fullname, email, password, role, department,phone });
+  if(existingDepertment){
+    existingDepertment?.members.push(user?._id)
+    await existingDepertment.save();
+  }
   res.status(201).send(new ApiSuccess(201, "User Created Successfully", user));
 });
 
@@ -49,6 +59,7 @@ let {department} = req.body || "public";
 export const deleteUsers = AsyncHandler(async (req, res) => {
   const { id } = req.params;
 
+  console.log("hii")
   const existinguser = await User.findById(id);
   if (!existinguser) {
     throw new ApiError(404, "User Not Found");

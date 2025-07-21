@@ -20,4 +20,10 @@ export const verifyJWT = async (req, res, next) => {
   next();
 };
 
-export const verifyAdmin = async (req, res, next) => {};
+export const verifyAdmin = async (req, res, next) => {
+  const { role } = req.user;
+  if (role !== "admin") {
+    throw new ApiError(400, "Not Authorized");
+  }
+  next();
+};

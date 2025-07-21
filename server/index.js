@@ -3,6 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./database/index.js";
 import { GlobalErrorHandler } from "./utils/GlobalError.js";
+import { initSocket } from "./utils/Socket.js";
+import http from "http";
 dotenv.config();
 
 const app = express();
@@ -16,20 +18,26 @@ import DepartmentRouter from "./router/Department.route.js";
 import PlaceRouter from "./router/Place.route.js";
 import UserRouter from "./router/Users.route.js";
 import ComplaintRouter from "./router/Complaint.route.js";
+import DashboardRouter from "./router/Dashboard.route.js";
 
 app.use("/api/auth",AuthRouter)
 app.use("/api/department",DepartmentRouter)
 app.use("/api/place",PlaceRouter)
 app.use("/api/users",UserRouter)
 app.use("/api/complaint",ComplaintRouter)
+app.use("/api/dashboard",DashboardRouter)
 
 
 app.use(GlobalErrorHandler)
 
+const server = http.createServer(app);
+
+// Initialize Socket.io
+initSocket(server);
 
 connectDB()
   .then(() => {
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`http://localhost:${PORT}`);
     });
   })

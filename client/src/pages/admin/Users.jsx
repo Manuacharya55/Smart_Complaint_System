@@ -3,6 +3,11 @@ import { useState } from "react";
 import { useAuth } from "../../context/UserContext";
 import { useEffect } from "react";
 import {
+  TbPencil,
+  TbToggleLeftFilled,
+  TbToggleRightFilled,
+} from "react-icons/tb";
+import {
   deleteRequest,
   getRequest,
   patchRequest,
@@ -90,9 +95,15 @@ const Users = () => {
     if (!user?.token) return;
 
     const response = await deleteRequest("users/", user?.token, id);
-    setUsers((prev) =>
+    console.log(response)
+    if(response.success){
+      toast.success(response.message)
+      setUsers((prev) =>
       prev.map((curEle) => (curEle._id == id ? response.data : curEle))
     );
+    }else{
+      toast.error(response.message)
+    }
   };
 
   const handleEdit = async (userid) => {
@@ -205,12 +216,18 @@ const Users = () => {
               <td>{curEle.role}</td>
               <td>{curEle.department?.name || "Public"}</td>
               <td>
-                <button id="edit" onClick={() => handleEdit(curEle._id)}>
-                  Edit
+                <div id="btn-holder">
+                  <button id="edit" onClick={() => handleEdit(curEle._id)}>
+                  <TbPencil />
                 </button>
                 <button id="delete" onClick={() => handleDelete(curEle._id)}>
-                  {curEle.isActive ? "Deactivate" : "Activate"}
+                  {curEle.isActive ? (
+                    <TbToggleLeftFilled />
+                  ) : (
+                    <TbToggleRightFilled />
+                  )}
                 </button>
+                </div>
               </td>
             </tr>
           );

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Table from "../../components/admin/Table";
 import { useAuth } from "../../context/UserContext";
 import { useState } from "react";
@@ -9,6 +9,11 @@ import {
   postRequest,
 } from "../../services/Api";
 import toast from "react-hot-toast";
+import {
+  TbPencil,
+  TbToggleLeftFilled,
+  TbToggleRightFilled,
+} from "react-icons/tb";
 
 const Department = () => {
   const { user } = useAuth();
@@ -24,35 +29,47 @@ const Department = () => {
   };
 
   const handleSubmit = async (e) => {
-    setIsClicked(true);
     e.preventDefault();
-    let response;
+    setIsClicked(true);
+
     if (!user?.token) {
+      setIsClicked(false);
       return;
     }
+
+    let response;
 
     if (isEditing) {
       response = await patchRequest(
         "department/",
-        user?.token,
-        {
-          name: data,
-        },
+        user.token,
+        { name: data },
         id
       );
-      setIsEditing(false);
+      if (response?.success) {
+        setDepartment((prev) =>
+          prev.map((curEle) =>
+            curEle._id === id ? response.data : curEle
+          )
+        );
+        toast.success(response.message);
+        setIsEditing(false);
+        setId(undefined);
+        setData("");
+      } else {
+        toast.error(response?.message);
+      }
     } else {
-      response = await postRequest("department/", user?.token, {
+      response = await postRequest("department/", user.token, {
         name: data,
       });
-    }
-
-    if (response?.success) {
-      toast.success(response.message);
-      setDepartment((prev) => [...prev, response.data]);
-      setData("");
-    } else {
-      toast.error(response?.message);
+      if (response?.success) {
+        setDepartment((prev) => [...prev, response.data]);
+        toast.success(response.message);
+        setData("");
+      } else {
+        toast.error(response?.message);
+      }
     }
     setIsClicked(false);
   };
@@ -62,7 +79,7 @@ const Department = () => {
 
     const response = await getRequest("department/", user?.token);
     setDepartment(response.data);
-    setIsLoading(false)
+    setIsLoading(false);
     console.log(response.data);
   };
 
@@ -76,9 +93,14 @@ const Department = () => {
     if (!user?.token) return;
 
     const response = await deleteRequest("department/", user?.token, id);
-    setDepartment((prev) =>
-      prev.map((curEle) => (curEle._id == id ? response.data : curEle))
-    );
+    if(response.success){
+      setDepartment((prev) =>
+        prev.map((curEle) => (curEle._id == id ? response.data : curEle))
+      );
+      toast.success(response.message)
+    }else{
+      toast.error(response.message)
+    }
   };
 
   const handleEdit = async (userid) => {
@@ -90,7 +112,6 @@ const Department = () => {
 
   return (
     <div id="container">
-      
       <div id="add-department">
         <h1>Add Department</h1>
         <form onSubmit={handleSubmit}>
@@ -113,18 +134,24 @@ const Department = () => {
         <Table
           data={department}
           objkey={["Department Id", "Name", "Employee Count", "Operation"]}
-          renderRow={(item, index) => (
-            <tr key={item._id}>
-              <td>{item._id}</td>
-              <td>{item.name}</td>
-              <td>{item.members?.length || 0}</td>
+          renderRow={(curEle, index) => (
+            <tr key={curEle._id}>
+              <td>{curEle._id}</td>
+              <td>{curEle.name}</td>
+              <td>{curEle.members?.length || 0}</td>
               <td>
-                <button id="edit" onClick={() => handleEdit(item._id)}>
-                  Edit
-                </button>
-                <button id="delete" onClick={() => handleDelete(item._id)}>
-                  {item.isActive ? "De-Activate" : "Activate"}
-                </button>
+                <div id="btn-holder">
+                  <button id="edit" onClick={() => handleEdit(curEle._id)}>
+                    <TbPencil />
+                  </button>
+                  <button id="delete" onClick={() => handleDelete(curEle._id)}>
+                    {curEle.isActive ? (
+                      <TbToggleLeftFilled />
+                    ) : (
+                      <TbToggleRightFilled />
+                    )}
+                  </button>
+                </div>
               </td>
             </tr>
           )}

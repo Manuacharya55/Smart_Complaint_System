@@ -1,6 +1,6 @@
 import express from "express";
 
-import { verifyJWT } from "../middlewares/Auth.middleware.js";
+import { verifyAdmin, verifyJWT } from "../middlewares/Auth.middleware.js";
 import {
   addPlace,
   deletePlace,
@@ -9,10 +9,18 @@ import {
   updatePlace,
 } from "../controller/Place.controller.js";
 
+
 const router = express.Router();
 
-router.route("/").get(getAllPlace).post(addPlace);
+router
+  .route("/")
+  .get(verifyJWT,getAllPlace)
+  .post(verifyJWT, verifyAdmin, addPlace);
 
-router.route("/:id").get(getSinglePlace).patch(updatePlace).delete(deletePlace);
+router
+  .route("/:id")
+  .get(verifyJWT, verifyAdmin, getSinglePlace)
+  .patch(verifyJWT, verifyAdmin, updatePlace)
+  .delete(verifyJWT, verifyAdmin, deletePlace);
 
 export default router;

@@ -1,18 +1,23 @@
 import React from 'react'
-import { TbBuilding, TbHome, TbListDetails, TbLocation, TbUsers } from 'react-icons/tb';
+import {TbHome,TbLogout,TbUpload, } from 'react-icons/tb';
 import NavBar from '../components/NavBar';
 
 const UserLayout = ({children}) => {
 let routes = [
     {
-      path: "/upload-complaint",
+      path: "/user-complaints",
       icon: <TbHome />,
       label: "Home",
     },
     {
-      path: "/user-complaints",
-      icon: <TbListDetails />,
-      label: "Complaints",
+      path: "/upload-complaint",
+      icon: <TbUpload />,
+      label: "Upload Complaint",
+    },
+    {
+      path: "/logout",
+      icon: <TbLogout /> ,
+      label: "Logout",
     },
   ];
   return (

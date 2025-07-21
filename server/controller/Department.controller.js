@@ -28,7 +28,6 @@ export const getSingleDepartment = AsyncHandler(async (req, res) => {
 export const addDepartment = AsyncHandler(async (req, res) => {
   const { name } = req.body;
 
-  console.log("department");
   const existingDepartment = await Department.findOne({ name });
 
   if (existingDepartment) {
@@ -44,7 +43,7 @@ export const addDepartment = AsyncHandler(async (req, res) => {
 export const updateDepartment = AsyncHandler(async (req, res) => {
   const { name } = req.body;
   const { id } = req.params;
-  console.log(id);
+
   const existingDepartment = await Department.findByIdAndUpdate(
     id,
     { $set: { name: name } },

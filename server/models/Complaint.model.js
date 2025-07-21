@@ -18,6 +18,7 @@ const ComplaintSchema = new Schema(
     },
     images: [String],
     location: {
+      state: String,
       district: String,
       place: String,
       latitude: Number,
@@ -34,7 +35,7 @@ const ComplaintSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["Pending", "In Progress", "Resolved", "Rejected"],
+      enum: ["Pending", "Processing", "Resolved", "Rejected"],
       default: "Pending",
     },
     description: {
