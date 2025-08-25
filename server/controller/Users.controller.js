@@ -6,7 +6,11 @@ import { ObjectId } from "mongodb";
 import Department from "../models/Department.model.js";
 
 export const allUsers = AsyncHandler(async (req, res) => {
-  const users = await User.find().populate("department");
+    const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+  const skip = (page - 1) * limit;
+
+  const users = await User.find().populate("department").limit(limit).skip(skip);
   res
     .status(200)
     .send(new ApiSuccess(200, "All Users Fetched Successfully", users));

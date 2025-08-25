@@ -8,7 +8,12 @@ import {
   patchRequest,
   postRequest,
 } from "../../services/Api";
-import { TbPencil, TbToggleLeftFilled, TbToggleRightFilled } from "react-icons/tb";
+import {
+  TbPencil,
+  TbToggleLeftFilled,
+  TbToggleRightFilled,
+} from "react-icons/tb";
+import Pagination from "../../components/Pagination";
 
 const Place = () => {
   const { user } = useAuth();
@@ -18,6 +23,7 @@ const Place = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [id, setId] = useState();
+  const [page, setPage] = useState(1);
 
   const handleChange = (e) => {
     setData(e.target.value);
@@ -35,12 +41,7 @@ const Place = () => {
     let response;
 
     if (isEditing) {
-      response = await patchRequest(
-        "place/",
-        user.token,
-        { name: data },
-        id
-      );
+      response = await patchRequest("place/", user.token, { name: data }, id);
       setIsEditing(false);
     } else {
       response = await postRequest("place/", user.token, { name: data });
@@ -67,7 +68,7 @@ const Place = () => {
   const fetchData = async () => {
     if (!user) return;
 
-    const response = await getRequest("place/", user?.token);
+    const response = await getRequest(`place?page=${page}`, user?.token);
     setDepartment(response.data);
     setIsLoading(false);
     console.log(response.data);
@@ -77,20 +78,20 @@ const Place = () => {
     if (user?.token) {
       fetchData();
     }
-  }, [user?.token]);
+  }, [user?.token,page]);
 
   const handleDelete = async (id) => {
     if (!user?.token) return;
 
     const response = await deleteRequest("place/", user?.token, id);
 
-    if(response.success){
-      toast.success(response.message)
+    if (response.success) {
+      toast.success(response.message);
       setDepartment((prev) =>
         prev.map((curEle) => (curEle._id == id ? response.data : curEle))
       );
-    }else{
-      toast.error(response.message)
+    } else {
+      toast.error(response.message);
     }
   };
 
@@ -103,7 +104,7 @@ const Place = () => {
 
   return (
     <div id="container">
-      <div id="add-department">
+      <div id="add-department" className="background">
         <h1>Add Place</h1>
         <form onSubmit={handleSubmit}>
           <input
@@ -147,6 +148,8 @@ const Place = () => {
           )}
         />
       )}
+
+      <Pagination setPage={setPage} page={page} users={department}/>
     </div>
   );
 };

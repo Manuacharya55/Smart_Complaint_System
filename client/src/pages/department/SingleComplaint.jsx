@@ -7,6 +7,7 @@ import { useState } from "react";
 import ImageCorousal from "../../components/department/ImageCorousal";
 import { toast } from "react-hot-toast";
 import { TbLocation } from "react-icons/tb";
+import MapComponent from "../../components/department/MapComponent";
 const SingleComplaint = () => {
   const { id } = useParams();
   const { user } = useAuth();
@@ -16,7 +17,6 @@ const SingleComplaint = () => {
   const fetchSingleComplaint = async () => {
     if (!user) return;
     const resposne = await getRequest(`complaint/${id}`, user?.token);
-    console.log(resposne.data);
     setComplaint(resposne.data);
     setIsLoading(false);
   };
@@ -29,6 +29,7 @@ const SingleComplaint = () => {
       { status: e.target.value },
       id
     );
+    console.log(response.data)
     setComplaint(response.data);
     toast.success(response.message);
   };
@@ -57,19 +58,24 @@ const SingleComplaint = () => {
                 : "rgb(87 240 0)",
           }}
         >
-          {complaint.status}
+          {complaint?.status}
         </p>
         <ImageCorousal images={complaint?.images} />
 
         <p id="type">{complaint.type}</p>
-        <p style={{textAlign:"justify"}}>{complaint.description}</p>
+        <p style={{ textAlign: "justify" }}>{complaint.description}</p>
 
         <div id="location">
           <h2>Location</h2>
-          <p>{complaint.location.state}</p>
-          <p>{complaint.location.district}</p>
-          <p>{complaint.location.place}</p>
-          <NavLink to={`https://www.google.com/maps?q=${complaint.location.latitude},${complaint.location.longitude}`} target="_blank">Check Route in Map <TbLocation /></NavLink>
+          <p>{complaint.location?.state}</p>
+          <p>{complaint.location?.district}</p>
+          <p>{complaint.location?.place}</p>
+          <NavLink
+            to={`https://www.google.com/maps?q=${complaint.location?.latitude},${complaint.location?.longitude}`}
+            target="_blank"
+          >
+            Check Route in Map <TbLocation />
+          </NavLink>
         </div>
         <div id="update-status">
           <h3>update status</h3>
@@ -85,6 +91,8 @@ const SingleComplaint = () => {
           </select>
         </div>
       </div>
+
+      <MapComponent lat={complaint.location?.latitude} lng={complaint.location?.longitude}/>
     </div>
   );
 };

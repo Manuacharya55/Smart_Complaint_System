@@ -4,15 +4,17 @@ import { useAuth } from "../../context/UserContext";
 import Card from "../../components/user/Card";
 import { useEffect } from "react";
 import { getRequest } from "../../services/Api";
+import Pagination from "../../components/Pagination";
 
 const Complaints = () => {
   const [complaint, setComplaint] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
+  const [page,setPage] = useState(1)
 
   const loadComplaints = async () => {
     if (!user || !user?.token) return;
-    const response = await getRequest("complaint/", user?.token);
+    const response = await getRequest(`complaint?page=${page}`, user?.token);
     setComplaint(response.data);
     setIsLoading(false);
   };
@@ -21,7 +23,7 @@ const Complaints = () => {
     if (user?.token) {
       loadComplaints();
     }
-  }, [user?.token]);
+  }, [user?.token,page]);
   return (
     <div id="container">
       <h1 id="title">Department Complaints</h1>
@@ -42,6 +44,7 @@ const Complaints = () => {
                 />
               ))
             : "No complaints yet"}
+        <Pagination setPage={setPage} page={page} users={complaint}/>
         </div>
       )}
     </div>

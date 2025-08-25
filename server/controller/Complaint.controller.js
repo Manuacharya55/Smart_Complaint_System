@@ -18,7 +18,6 @@ export const addComplaint = async (req, res) => {
     latitude,
   } = req.body;
 
-  console.log(req.body)
   if (!image1 || !image2 || !image3) {
     throw new ApiError(400, "Please provide all three images");
   }
@@ -58,21 +57,47 @@ export const addComplaint = async (req, res) => {
 };
 
 export const getComplaints = AsyncHandler(async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 12;
+  const skip = (page - 1) * limit;
+
   if (req.user?.department == null || req.user.department == "public") {
-    const complaints = await Complaint.find({ user: req.user?._id });
+    const complaints = await Complaint.find({ user: req.user?._id }).limit(limit).skip(skip);
     res
       .status(200)
       .json(new ApiSuccess(200, "Complaints fetched successfully", complaints));
   } else {
     const complaints = await Complaint.find({
       department: req.user?.department,
-    });
+    }).limit(limit).skip(skip);;
     res
       .status(200)
       .json(new ApiSuccess(200, "Complaints fetched successfully", complaints));
   }
 });
 
+export const getAllComplaints = AsyncHandler(async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 12;
+  const skip = (page - 1) * limit;
+
+  const complaints = await Complaint.find()
+    .populate([
+      {
+        path: "user",
+        select: "fullname email",
+      },
+      {
+        path: "department",
+        select: "name",
+      },
+    ])
+    .limit(limit)
+    .skip(skip);
+  res
+    .status(200)
+    .json(new ApiSuccess(200, "Complaints fetched successfully", complaints));
+});
 export const getSingleComplaint = AsyncHandler(async (req, res) => {
   const { id } = req.params;
 

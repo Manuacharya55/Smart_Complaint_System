@@ -11,7 +11,7 @@ const Card = ({ img, problem, type, status, role ,_id}) => {
         : "rgb(87 240 0)",
   };
   return (
-    <div id="card">
+    <div id="card" className="background">
       <img src={img} alt="" />
       <div id="detail">
         <p id="status" style={style}>

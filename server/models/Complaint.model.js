@@ -5,7 +5,7 @@ const ComplaintSchema = new Schema(
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      // required: true,
+      required: true,
     },
     department: {
       type: Schema.Types.ObjectId,

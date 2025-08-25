@@ -68,9 +68,23 @@ table button#delete {
 #btn-holder{
   display: flex;
 }
+
+.btn-holder{
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.btn-holder button{
+  width: 150px;
+}
+
+.btn-holder button:disabled{
+  background-color: grey;
+}
 /* Add Department Section */
 #add-department {
-  background-color: var(---secondary-color);
+  /* background-color: var(---secondary-color); */
   padding: 20px;
   border-radius: 10px;
 
@@ -139,8 +153,6 @@ table button#delete {
 #tile {
   width: 100%;
   max-width: 300px;
-  background-color: var(---secondary-color);
-  border: 1px solid var(---support-text);
   padding: 20px;
   border-radius: 10px;
   text-align: center;
@@ -167,7 +179,6 @@ table button#delete {
 
 #links {
   padding: 20px;
-  background-color: var(---secondary-color);
   border-radius: 10px;
   display: flex;
   align-items: center;

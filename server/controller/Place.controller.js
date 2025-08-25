@@ -4,7 +4,10 @@ import { ApiSuccess } from "../utils/ApiSuccess.js";
 import { AsyncHandler } from "../utils/AsyncHandler.js";
 
 export const getAllPlace = AsyncHandler(async (req, res) => {
-  const place = await Place.find();
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+  const skip = (page - 1) * limit;
+  const place = await Place.find().limit(limit).skip(skip);
 
   res
     .status(200)

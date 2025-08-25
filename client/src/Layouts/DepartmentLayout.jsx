@@ -16,10 +16,13 @@ const DepartmentLayout = ({ children }) => {
     },
   ];
   return (
-    <>
-      <NavBar routes={routes} />
+    <div id="wrapper">
+      <div id="dot"></div>
+      <div id="sub-wrapper">
+        <NavBar routes={routes} />
       {children}
-    </>
+      </div>
+    </div>
   );
 };
 

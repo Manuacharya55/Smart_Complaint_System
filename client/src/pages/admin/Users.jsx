@@ -15,8 +15,10 @@ import {
 } from "../../services/Api";
 import { toast } from "react-hot-toast";
 import Table from "../../components/admin/Table";
+import Pagination from "../../components/Pagination";
 
 const Users = () => {
+  const [page, setPage] = useState(1);
   const [departments, setDepartments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [users, setUsers] = useState([]);
@@ -31,6 +33,7 @@ const Users = () => {
     department: null,
     phone: "",
   });
+  
   const { user } = useAuth();
 
   const handleChange = (e) => {
@@ -52,7 +55,7 @@ const Users = () => {
   const fetchAllUsers = async () => {
     if (!user?.token) return;
 
-    const response = await getRequest("/users", user?.token);
+    const response = await getRequest(`/users?page=${page}`, user?.token);
     if (response.success) {
       setUsers(response.data);
     } else {
@@ -95,14 +98,14 @@ const Users = () => {
     if (!user?.token) return;
 
     const response = await deleteRequest("users/", user?.token, id);
-    console.log(response)
-    if(response.success){
-      toast.success(response.message)
+    console.log(response);
+    if (response.success) {
+      toast.success(response.message);
       setUsers((prev) =>
-      prev.map((curEle) => (curEle._id == id ? response.data : curEle))
-    );
-    }else{
-      toast.error(response.message)
+        prev.map((curEle) => (curEle._id == id ? response.data : curEle))
+      );
+    } else {
+      toast.error(response.message);
     }
   };
 
@@ -119,13 +122,13 @@ const Users = () => {
       fetchAllUsers();
       setIsLoading(false);
     }
-  }, [user?.token]);
+  }, [user?.token, page]);
 
   return isLoading ? (
     "Loading"
   ) : (
     <div id="container">
-      <div id="add-department">
+      <div id="add-department" className="background">
         <h1>Add User</h1>
         <form onSubmit={handleSubmit}>
           <input
@@ -182,28 +185,6 @@ const Users = () => {
         </form>
       </div>
 
-      {/* yet to develop */}
-      <div id="add-department">
-        <form>
-          <input type="text" placeholder="Search User By Name" />
-          <select name="departement" id="">
-            <option value="null">---select---</option>
-            {departments.length > 0 &&
-              departments.map((department) => (
-                <option key={department._id} value={department._id}>
-                  {department.name}
-                </option>
-              ))}
-          </select>
-          <select name="role" id="" value={data.role} onChange={handleChange}>
-            <option value="null">---select---</option>
-            <option value="admin">Admin</option>
-            <option value="user">User</option>
-            <option value="authority">Authority</option>
-          </select>
-        </form>
-      </div>
-
       <Table
         data={users}
         objkey={["name", "email", "phone", "role", "department", "operations"]}
@@ -218,21 +199,22 @@ const Users = () => {
               <td>
                 <div id="btn-holder">
                   <button id="edit" onClick={() => handleEdit(curEle._id)}>
-                  <TbPencil />
-                </button>
-                <button id="delete" onClick={() => handleDelete(curEle._id)}>
-                  {curEle.isActive ? (
-                    <TbToggleLeftFilled />
-                  ) : (
-                    <TbToggleRightFilled />
-                  )}
-                </button>
+                    <TbPencil />
+                  </button>
+                  <button id="delete" onClick={() => handleDelete(curEle._id)}>
+                    {curEle.isActive ? (
+                      <TbToggleLeftFilled />
+                    ) : (
+                      <TbToggleRightFilled />
+                    )}
+                  </button>
                 </div>
               </td>
             </tr>
           );
         }}
       />
+     <Pagination setPage={setPage} page={page} users={users}/>
     </div>
   );
 };

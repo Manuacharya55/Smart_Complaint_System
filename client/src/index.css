@@ -28,27 +28,30 @@ body,
   background-color: var(---primary-color);
 }
 
-#root {
+#root,
+#wrapper,
+#sub-wrapper {
   position: relative;
   display: flex;
+  width: 100%;
+  margin: auto;
 }
 
-/* #root::before {
-  position: absolute;
-  content: "";
-  background: radial-gradient(
-    var(---component-color),
-    transparent,
-    transparent
-  );
-  width: 300px;
-  height: 300px;
+#dot {
+  width: 400px;
+  height: 400px;
   border-radius: 50%;
-  filter: blur(100px);
-  backdrop-filter: blur(30px);
-  right: 0%;
-  top: -20%;
-} */
+  background-image: radial-gradient(
+    closest-side,
+    var(---component-color),
+    var(---primary-color)
+  );
+  position: fixed;
+  top: -150px;
+  left: 15%;
+  transform: scale(3);
+  /* z-index: -1; */
+}
 
 #navbar {
   height: 100%;
@@ -120,10 +123,12 @@ nav ul li:hover div {
 }
 
 @media (max-width: 768px) {
-#root,body,html{
-  width: auto;
-  height: auto;
-}
+  #root,
+  body,
+  html {
+    width: auto;
+    height: auto;
+  }
 
   #root {
     flex-direction: column;
@@ -163,7 +168,7 @@ nav ul li:hover div {
     transition: all 0.5s ease-in-out;
   }
 
-  #container{
+  #container {
     width: 100%;
     height: fit-content;
     display: flex;
@@ -174,9 +179,19 @@ nav ul li:hover div {
     border: 1px solid white;
   }
 
-
   #banner h1 {
     font-size: 3rem;
     text-align: center;
   }
+}
+
+.background {
+  background: rgba(46, 46, 46, 0.5);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+
+  border: 1px solid rgba(255, 255, 255, 0.208);
+  border-radius: 15px;
+  z-index: 2;
+  position: relative;
 }

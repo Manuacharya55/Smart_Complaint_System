@@ -14,6 +14,7 @@ import {
   TbToggleLeftFilled,
   TbToggleRightFilled,
 } from "react-icons/tb";
+import Pagination from "../../components/Pagination";
 
 const Department = () => {
   const { user } = useAuth();
@@ -23,6 +24,7 @@ const Department = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [id, setId] = useState();
+  const [page,setPage] = useState(1)
 
   const handleChange = (e) => {
     setData(e.target.value);
@@ -77,7 +79,7 @@ const Department = () => {
   const fetchData = async () => {
     if (!user) return;
 
-    const response = await getRequest("department/", user?.token);
+    const response = await getRequest(`department?page=${page}`, user?.token);
     setDepartment(response.data);
     setIsLoading(false);
     console.log(response.data);
@@ -112,7 +114,7 @@ const Department = () => {
 
   return (
     <div id="container">
-      <div id="add-department">
+      <div id="add-department" className="background">
         <h1>Add Department</h1>
         <form onSubmit={handleSubmit}>
           <input
@@ -157,6 +159,8 @@ const Department = () => {
           )}
         />
       )}
+
+      <Pagination setPage={setPage} page={page} users={department}/>
     </div>
   );
 };
