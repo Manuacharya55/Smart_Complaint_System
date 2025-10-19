@@ -38,6 +38,10 @@ button {
   display: block;
 }
 
+form button{
+  margin: auto;
+  margin-top: 20px;
+}
 #card-holder {
   width: 100%;
   display: flex;

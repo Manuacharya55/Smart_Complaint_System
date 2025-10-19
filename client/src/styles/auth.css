@@ -11,7 +11,6 @@
 #auth-form {
   max-width: 350px;
   width: 100%;
-  background-color: var(---secondary-color);
   padding: 20px;
   border-radius: 8px;
 
@@ -47,6 +46,7 @@
   color: var(---heading-text-color);
 }
 
+
 #auth-form input:focus {
   outline: none;
   border: 1px solid var(---component-color);
@@ -64,4 +64,5 @@
   border-radius: 8px;
   color: var(---heading-text-color);
   cursor: pointer;
+
 }

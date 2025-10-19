@@ -134,24 +134,28 @@ nav ul li:hover div {
     flex-direction: column;
   }
 
+  #sub-wrapper{
+    flex-direction: column;
+    width: 100%;
+  }
+
   #navbar {
     width: 100%;
-    display: flex;
-    height: fit-content;
-    align-items: center;
-    justify-content: center;
+    flex-direction: row;
   }
 
   nav {
-    width: fit-content;
-    width: 150px;
+    /* width: 100%; */
+    /* width: 150px; */
   }
   nav ul {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    height: fit-content;
   }
 
+  nav ul li{
+    padding: 0px 5px;
+  }
   nav ul li div {
     position: absolute;
     bottom: 10px;
@@ -161,6 +165,7 @@ nav ul li:hover div {
     color: var(---support-text);
     font-size: 1rem;
   }
+
   nav ul li:hover div {
     opacity: 1;
     visibility: visible;

@@ -29,15 +29,15 @@ export const getSingleDepartment = AsyncHandler(async (req, res) => {
 });
 
 export const addDepartment = AsyncHandler(async (req, res) => {
-  const { name } = req.body;
-
+  const { name,description } = req.body;
+console.log(req.body)
   const existingDepartment = await Department.findOne({ name });
 
   if (existingDepartment) {
     throw new ApiError(400, "Department Already Exists");
   }
 
-  const department = await Department.create({ name });
+  const department = await Department.create({ name,description });
   res
     .status(200)
     .send(new ApiSuccess(200, "Department Added Successfully", department));

@@ -33,6 +33,7 @@ export const addComplaint = async (req, res) => {
   const existingDepartment = await Department.findOne({
     name: data.department,
   });
+  
   if (!existingDepartment) {
     throw new ApiError(400, "Department not found");
   }

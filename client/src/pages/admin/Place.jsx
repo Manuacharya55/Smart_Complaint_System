@@ -105,7 +105,7 @@ const Place = () => {
   return (
     <div id="container">
       <div id="add-department" className="background">
-        <h1>Add Place</h1>
+        <h1>Manage Place</h1>
         <form onSubmit={handleSubmit}>
           <input
             type="text"

@@ -39,8 +39,9 @@ tbody tr {
 }
 
 tbody tr:nth-child(odd) {
-  background-color: var(---primary-color);
+  background-color: var(---secondary-color);
 }
+
 td {
   padding: 0px 20px;
 }
@@ -82,6 +83,7 @@ table button#delete {
 .btn-holder button:disabled{
   background-color: grey;
 }
+
 /* Add Department Section */
 #add-department {
   /* background-color: var(---secondary-color); */
@@ -98,33 +100,43 @@ table button#delete {
 
 #add-department form {
   width: 100%;
+  max-width: 700px;
+  display: grid;
+  grid-template-columns: auto auto auto;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center; */
+  /* justify-content: center; */
   gap: 20px;
   flex-wrap: wrap;
+  /* border: 1px solid; */
 }
+
+
 #add-department h1 {
   text-align: center;
   font-size: 3rem;
   color: var(---heading-text-color);
 }
 
-#add-department input {
+#add-department input,textarea {
   padding: 10px;
   background-color: transparent;
   border: 1px solid var(---support-text);
   border-radius: 8px;
   color: var(---heading-text-color);
+  width: 100%;
 }
 
+textarea{
+  grid-column: span 2;
+}
 #add-department select {
   padding: 10px;
   background-color: transparent;
   border: 1px solid var(---support-text);
   border-radius: 8px;
   color: var(---heading-text-color);
+  display: block;
 }
 
 #add-department option {
@@ -138,6 +150,8 @@ table button#delete {
   color: var(---heading-text-color);
   border-radius: 8px;
   border: none;
+  width: 100%;
+  grid-column: span 3;
 }
 
 /* DashBoard _ CSS */

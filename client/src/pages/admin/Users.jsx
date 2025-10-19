@@ -33,7 +33,7 @@ const Users = () => {
     department: null,
     phone: "",
   });
-  
+
   const { user } = useAuth();
 
   const handleChange = (e) => {
@@ -92,6 +92,14 @@ const Users = () => {
       toast.error(response?.message);
     }
     setIsClicked(false);
+    setData({
+      fullname: "",
+      email: "",
+      password: "",
+      role: null,
+      department: null,
+      phone: "",
+    });
   };
 
   const handleDelete = async (id) => {
@@ -129,7 +137,7 @@ const Users = () => {
   ) : (
     <div id="container">
       <div id="add-department" className="background">
-        <h1>Add User</h1>
+        <h1>Manage Users</h1>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -214,7 +222,7 @@ const Users = () => {
           );
         }}
       />
-     <Pagination setPage={setPage} page={page} users={users}/>
+      <Pagination setPage={setPage} page={page} users={users} />
     </div>
   );
 };

@@ -37,7 +37,7 @@ const UserComplaints = () => {
           {complaint?.length > 0 ? complaint.map(curele => <Card img={curele.images[0]} problem={curele.problem} type={curele.type} status={curele.status}/>) : "No complaints yet"}
         </div>
       )}
-      <Pagination page={page} setPage={setPage} users={complaint} />
+      {/*   <Pagination page={page} setPage={setPage} users={complaint} /> */}
 
     </div>
   )

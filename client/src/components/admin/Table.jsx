@@ -2,7 +2,7 @@ import React from "react";
 
 const Table = ({ data = [], objkey = [], renderRow }) => {
   return (
-    <table>
+    <table className="background">
       <thead>
         <tr>
           {objkey.map((key, index) => (

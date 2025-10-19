@@ -34,8 +34,10 @@ const Register = () => {
   };
 
   return (
-    <div id="auth">
-      <form onSubmit={handleSubmit} id="auth-form">
+    <div id="wrapper">
+      <div id="dot"></div>
+      <div id="auth">
+      <form onSubmit={handleSubmit} id="auth-form" className="background">
         <h1>Register</h1>
 
         <input
@@ -73,6 +75,7 @@ const Register = () => {
           {isClicked ? "processing" : "Register"}
         </button>
       </form>
+    </div>
     </div>
   );
 };

@@ -54,8 +54,12 @@ const Login = () => {
   };
 
   return (
-    <div id="auth">
-      <form id="auth-form" onSubmit={handleSubmit}>
+    <div id="wrapper">
+      <div id="dot">
+        
+      </div>
+      <div id="auth">
+      <form id="auth-form" className="background" onSubmit={handleSubmit}>
         <h1>Login </h1>
         <input
           type="email"
@@ -79,6 +83,7 @@ const Login = () => {
           {isClicked ? "processing" : "Login"}
         </button>
       </form>
+    </div>
     </div>
   );
 };

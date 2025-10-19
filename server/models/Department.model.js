@@ -5,6 +5,10 @@ const DepartmentSchema = new Schema({
         type:String,
         required:true
     },
+    description:{
+        type:String,
+        required:true
+    },
     isActive:{
         type:Boolean,
         default:true

@@ -48,6 +48,12 @@ let {department} = req.body || "public";
     throw new ApiError(400, "Please Provide All Fields");
   }
 
+  const existingdepartment = await Department.findById(department)
+
+  if(!department){
+    throw new ApiError(400,"No Such Departments");
+  }
+
   const user = await User.findByIdAndUpdate(
     id,
     { $set: { fullname, email, password, role,phone,department } },
@@ -57,6 +63,9 @@ let {department} = req.body || "public";
     throw new ApiError(404, "User Not Found");
   }
 
+  console.log(existingdepartment)
+  existingdepartment?.members.push(id);
+  await existingdepartment.save();
   res.status(200).send(new ApiSuccess(200, "User Updated Successfully", user));
 });
 
