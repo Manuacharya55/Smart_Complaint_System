@@ -8,8 +8,16 @@ import {
   TbLogout,
   TbUsers,
 } from "react-icons/tb";
+import { useAuth } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const AdminLayout = ({ children }) => {
+  const {user} = useAuth();
+  const navigate = useNavigate()
+  console.log(user)
+
+  if(user == null) return <h1>...loading</h1>
+
   let routes = [
     {
       path: "/dashboard",
@@ -42,7 +50,7 @@ const AdminLayout = ({ children }) => {
       label: "Logout",
     },
   ];
-  return (
+  if(user.role == "admin") return (
     <div id="wrapper">
       <div id="dot"></div>
       <div id="sub-wrapper">
@@ -51,6 +59,8 @@ const AdminLayout = ({ children }) => {
       </div>
     </div>
   );
+
+  return navigate(-1)
 };
 
 export default AdminLayout;

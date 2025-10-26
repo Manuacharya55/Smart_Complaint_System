@@ -71,7 +71,6 @@ const Place = () => {
     const response = await getRequest(`place?page=${page}`, user?.token);
     setDepartment(response.data);
     setIsLoading(false);
-    console.log(response.data);
   };
 
   useEffect(() => {

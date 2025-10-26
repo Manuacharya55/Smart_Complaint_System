@@ -1,6 +1,8 @@
 import React from 'react'
 import {TbHome,TbLogout,TbUpload, } from 'react-icons/tb';
 import NavBar from '../components/NavBar';
+import { useAuth } from '../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 const UserLayout = ({children}) => {
 let routes = [
@@ -20,7 +22,13 @@ let routes = [
       label: "Logout",
     },
   ];
-  return (
+
+  const {user} = useAuth()
+  const navigate = useNavigate();
+
+  if(user == null) return <h1>...loading</h1>
+
+  if(user.role == "user") return (
     <div id="wrapper">
       <div id="dot"></div>
       <div id="sub-wrapper">
@@ -29,6 +37,8 @@ let routes = [
       </div>
     </div>
   );
+
+  return navigate(-1)
 }
 
 export default UserLayout

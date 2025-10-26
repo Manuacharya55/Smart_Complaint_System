@@ -30,7 +30,6 @@ export const getSingleDepartment = AsyncHandler(async (req, res) => {
 
 export const addDepartment = AsyncHandler(async (req, res) => {
   const { name,description } = req.body;
-console.log(req.body)
   const existingDepartment = await Department.findOne({ name });
 
   if (existingDepartment) {

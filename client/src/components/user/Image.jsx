@@ -2,7 +2,6 @@
 const Image = ({image,uploadImage,name,setState}) => {
   const handleUpload = async (e) => {
     const file = e.target.files[0];
-    console.log(e.target.name);
     const lin = await uploadImage(file);
     setState((prev) => {
       return {
@@ -11,7 +10,6 @@ const Image = ({image,uploadImage,name,setState}) => {
       };
     });
 
-    console.log(e.target.name);
   };
 
   return (

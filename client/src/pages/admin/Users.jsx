@@ -106,7 +106,6 @@ const Users = () => {
     if (!user?.token) return;
 
     const response = await deleteRequest("users/", user?.token, id);
-    console.log(response);
     if (response.success) {
       toast.success(response.message);
       setUsers((prev) =>

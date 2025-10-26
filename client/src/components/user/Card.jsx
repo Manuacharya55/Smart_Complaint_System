@@ -21,6 +21,8 @@ const Card = ({ img, problem, type, status, role ,_id}) => {
         <p>{problem}</p>
 
         {role && role=="authority" && <NavLink to={`/department-complaint/${_id}`}>See Details <GoArrowUpRight /></NavLink>}
+
+        {role && role=="admin" && <NavLink to={`/complaint/${_id}`}>See Details <GoArrowUpRight /></NavLink>}
       </div>
     </div>
   );

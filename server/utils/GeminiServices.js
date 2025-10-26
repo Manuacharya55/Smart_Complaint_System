@@ -29,7 +29,7 @@ export const imageAnalysis = async (imageURL, departmentsArray) => {
     const imageBase64 = await fetchImageAsBase64(imageURL);
 
     const result = await ai.models.generateContent({
-      model: "gemini-1.5-flash",
+      model: "gemini-2.5-flash",
       contents: [
         {
           role: "user",
@@ -71,7 +71,6 @@ Respond ONLY in this strict JSON format:
     const rawText = result.candidates[0].content.parts[0].text; // 👈 must await
     const cleanJson = rawText.replace(/```json|```/g, "").trim();
 
-    console.log(cleanJson);
     return JSON.parse(cleanJson);
   } catch (error) {
     console.error("❌ Gemini API error:", error);

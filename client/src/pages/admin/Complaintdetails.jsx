@@ -8,7 +8,8 @@ import ImageCorousal from "../../components/department/ImageCorousal";
 import { toast } from "react-hot-toast";
 import { TbLocation } from "react-icons/tb";
 import MapComponent from "../../components/department/MapComponent";
-const SingleComplaint = () => {
+
+const complaintdetails = () => {
   const { id } = useParams();
   const { user } = useAuth();
   const [complaint, setComplaint] = useState({});
@@ -76,19 +77,7 @@ const SingleComplaint = () => {
             Check Route in Map <TbLocation />
           </NavLink>
         </div>
-        <div id="update-status">
-          <h3>update status</h3>
-          <select
-            name="status"
-            id=""
-            value={complaint.status}
-            onChange={handleChange}
-          >
-            <option value="Pending">pending</option>
-            <option value="Processing">processing</option>
-            <option value="Resolved">Resolved</option>
-          </select>
-        </div>
+
       </div>
 
       <MapComponent lat={complaint.location?.latitude} lng={complaint.location?.longitude}/>
@@ -96,4 +85,4 @@ const SingleComplaint = () => {
   );
 };
 
-export default SingleComplaint;
+export default complaintdetails;

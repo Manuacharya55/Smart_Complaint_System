@@ -4,6 +4,7 @@ import { useAuth } from "../../context/UserContext";
 import { getRequest } from "../../services/Api";
 import Table from "../../components/admin/Table";
 import Pagination from "../../components/Pagination";
+import Card from "../../components/user/Card";
 
 const Complaint = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -16,9 +17,7 @@ const Complaint = () => {
     if (!user?.token) return;
 
     const response = await getRequest(`/complaint/all-complaints?page=${page}`, user?.token);
-    console.log(response);
     if (response.success) {
-      console.log(response.data);
       setComplaint(response.data);
     } else {
       toast.error(response.message);
@@ -34,35 +33,27 @@ const Complaint = () => {
 
   return (
     <div id="container">
-      <Banner text={"Complaints"} />
-
-      <Table
-        data={complaint}
-        objkey={[
-          "Complaint id",
-          "Problem",
-          "Type",
-          "Status",
-          "Department",
-          "User",
-          "Date",
-        ]}
-        renderRow={(curEle, index) => {
-          return (
-            <tr key={index}>
-              <td>{curEle._id}</td>
-              <td>{curEle.problem}</td>
-              <td>{curEle.type}</td>
-              <td>{curEle.status}</td>
-              <td>{curEle.department?.name}</td>
-              <td>{curEle.user?.fullname}</td>
-              <td>{curEle.createdAt.split("T")[0]}</td>
-            </tr>
-          );
-        }}
-      />
-
-      <Pagination setPage={setPage} page={page} users={complaint}/>
+      <h1 id="title">Complaints</h1>
+      {isLoading ? (
+        "Loading"
+      ) : (
+        <div id="card-holder">
+          {complaint?.length > 0
+            ? complaint.map((curele) => (
+                <Card
+                  key={curele._id}
+                  img={curele.images[0]}
+                  problem={curele.problem}
+                  type={curele.type}
+                  status={curele.status}
+                  role={"admin"}
+                  _id={curele._id}
+                />
+              ))
+            : "No complaints yet"}
+        <Pagination setPage={setPage} page={page} users={complaint}/>
+        </div>
+      )}
     </div>
   );
 };

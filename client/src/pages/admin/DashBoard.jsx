@@ -22,7 +22,6 @@ const DashBoard = () => {
     if (response.success) {
       setIsLoading(false);
       setData(response.data);
-      console.log(response.data);
     } else {
       toast.error(response.message);
     }

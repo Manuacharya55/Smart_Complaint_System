@@ -18,7 +18,6 @@ export const getRequest = async (url, token) => {
 };
 
 export const postRequest = async (url, token, data) => {
-  console.log(url,data,token)
   try {
     const response = await axios.post(url, data, {
       headers: {
@@ -34,7 +33,6 @@ export const postRequest = async (url, token, data) => {
 };
 
 export const patchRequest = async (url, token, data, id) => {
-  console.log(url+id)
   try {
     const response = await axios.patch(url + id, data, {
       headers: {

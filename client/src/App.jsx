@@ -14,6 +14,7 @@ import UploadComplaint from "./pages/user/UploadComplaint";
 import UserComplaints from "./pages/user/UserComplaints";
 import DepartmentLayout from "./layouts/DepartmentLayout";
 import Complaints from "./pages/department/Complaints";
+import Complaintdetails from "./pages/admin/Complaintdetails";
 import SingleComplaint from "./pages/department/SingleComplaint";
 import Logout from "./pages/Logout";
 
@@ -63,6 +64,14 @@ const App = () => {
           element={
             <AdminLayout>
               <Complaint />
+            </AdminLayout>
+          }
+        />
+        <Route
+          path="/complaint/:id"
+          element={
+            <AdminLayout>
+              <Complaintdetails />
             </AdminLayout>
           }
         />

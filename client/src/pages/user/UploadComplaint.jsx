@@ -27,7 +27,6 @@ const UploadComplaint = () => {
   const handleSubmit = async (e) => {
     setDisabled(true)
     e.preventDefault();
-    console.log(image)
     const response = await postRequest("complaint/", user?.token, image);
 
     if (response.success) {
@@ -44,7 +43,6 @@ const UploadComplaint = () => {
       `https://us1.locationiq.com/v1/reverse?key=${key} &lat=${latitude}&lon=${longitude}&format=json&`
     );
 
-    console.log(data)
     setImage((prev) => {
       return {
         ...prev,
@@ -55,7 +53,6 @@ const UploadComplaint = () => {
         latitude,
       };
     });
-    console.log(image)
   };
   useEffect(() => {
     if (navigator.geolocation) {

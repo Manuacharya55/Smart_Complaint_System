@@ -89,7 +89,6 @@ const Department = () => {
     const response = await getRequest(`department?page=${page}`, user?.token);
     setDepartment(response.data);
     setIsLoading(false);
-    console.log(response.data);
   };
 
   useEffect(() => {

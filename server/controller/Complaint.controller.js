@@ -22,7 +22,7 @@ export const addComplaint = async (req, res) => {
     throw new ApiError(400, "Please provide all three images");
   }
 
-  const departments = await Department.find({ isActive: true }).select("name");
+  const departments = await Department.find({ isActive: true }).select("name description");
 
   const data = await imageAnalysis(image1, departments);
 
@@ -37,6 +37,7 @@ export const addComplaint = async (req, res) => {
   if (!existingDepartment) {
     throw new ApiError(400, "Department not found");
   }
+
   const complaint = await Complaint.create({
     description: data.description,
     problem: data.problem,
@@ -143,6 +144,7 @@ export const updateComplaintStatus = AsyncHandler(async (req, res) => {
     });
   }
 
+  console.log("done-complaint sent")
   res
     .status(200)
     .json(

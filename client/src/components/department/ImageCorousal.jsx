@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 
 const ImageCorousal = ({ images }) => {
-  console.log(images);
   const [index, setIndex] = useState(0);
   return (
     <div id="corousal-holder">

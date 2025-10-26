@@ -1,6 +1,8 @@
 import React from "react";
 import { TbListDetails, TbLogout } from "react-icons/tb";
 import NavBar from "../components/NavBar";
+import { useAuth } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const DepartmentLayout = ({ children }) => {
   let routes = [
@@ -15,7 +17,13 @@ const DepartmentLayout = ({ children }) => {
       label: "Logout",
     },
   ];
-  return (
+
+  const {user} = useAuth();
+  const navigate = useNavigate();
+
+  if(user == null) return <h1>...loading</h1>
+
+  if(user.role == "authority") return (
     <div id="wrapper">
       <div id="dot"></div>
       <div id="sub-wrapper">
@@ -24,6 +32,8 @@ const DepartmentLayout = ({ children }) => {
       </div>
     </div>
   );
+
+  return navigate(-1)
 };
 
 export default DepartmentLayout;
