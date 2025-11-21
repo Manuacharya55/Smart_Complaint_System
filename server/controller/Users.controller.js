@@ -71,7 +71,6 @@ let {department} = req.body || "public";
 export const deleteUsers = AsyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  console.log("hii")
   const existinguser = await User.findById(id);
   if (!existinguser) {
     throw new ApiError(404, "User Not Found");

@@ -144,7 +144,6 @@ export const updateComplaintStatus = AsyncHandler(async (req, res) => {
     });
   }
 
-  console.log("done-complaint sent")
   res
     .status(200)
     .json(

@@ -24,7 +24,7 @@ body,
 #root {
   width: 100%;
   height: 100%;
-  /* overflow: hidden; */
+  overflow: hidden;
   background-color: var(---primary-color);
 }
 
@@ -34,6 +34,7 @@ body,
   position: relative;
   display: flex;
   width: 100%;
+  height: 100%;
   margin: auto;
 }
 
@@ -53,11 +54,21 @@ body,
   /* z-index: -1; */
 }
 
+#sub-wrapper{
+  overflow: hidden;
+  overflow-y: auto;
+}
+#msg{
+  font-size: 1.3rem;
+  color: white;
+  text-align: center;
+}
 #navbar {
   height: 100%;
   padding: 0px 20px;
   display: flex;
   justify-content: center;
+  align-items: start;
 }
 
 nav {
@@ -126,7 +137,6 @@ nav ul li:hover div {
   #root,
   body,
   html {
-    width: auto;
     height: auto;
   }
 
@@ -139,15 +149,14 @@ nav ul li:hover div {
     width: 100%;
   }
 
+  #title{
+    font-size: 3rem;
+  }
   #navbar {
     width: 100%;
     flex-direction: row;
   }
 
-  nav {
-    /* width: 100%; */
-    /* width: 150px; */
-  }
   nav ul {
     display: flex;
     height: fit-content;
@@ -180,8 +189,6 @@ nav ul li:hover div {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    border: 1px solid white;
   }
 
   #banner h1 {
@@ -199,4 +206,52 @@ nav ul li:hover div {
   border-radius: 15px;
   z-index: 2;
   position: relative;
+}
+
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+#action-btn{
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+
+.modal-box {
+  padding: 20px;
+  min-width: 350px;
+  border-radius: 10px;
+  position: relative;
+  animation: pop 0.2s ease-out;
+}
+
+.modal-close {
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  background-color: var(---component-color);
+  width: 50px;
+  height: 50px;
+  margin-left: auto;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

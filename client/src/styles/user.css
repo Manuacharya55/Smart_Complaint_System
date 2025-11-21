@@ -15,6 +15,11 @@
   padding: 10px;
 }
 
+.error{
+  display: block;
+  color: red;
+  text-align: left;
+}
 input[type="file"] {
   display: none;
 }

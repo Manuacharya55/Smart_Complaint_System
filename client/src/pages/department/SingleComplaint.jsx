@@ -28,7 +28,7 @@ const SingleComplaint = () => {
       { status: e.target.value },
       id
     );
-    console.log(response.data,"here here")
+
     setComplaint(response.data);
     toast.success(response.message);
   };

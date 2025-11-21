@@ -15,9 +15,7 @@
   border-radius: 8px;
 
   display: flex;
-  align-items: center;
   flex-direction: column;
-  gap: 15px;
 }
 
 #auth-form h1 {
@@ -27,6 +25,7 @@
 }
 
 #auth-form p {
+  margin-top: 10px;
   text-align: left;
   color: var(---heading-text-color);
 }
@@ -44,6 +43,7 @@
   width: 100%;
   border-radius: 8px;
   color: var(---heading-text-color);
+  margin-top: 10px;
 }
 
 

@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 const AdminLayout = ({ children }) => {
   const {user} = useAuth();
   const navigate = useNavigate()
-  console.log(user)
 
   if(user == null) return <h1>...loading</h1>
 

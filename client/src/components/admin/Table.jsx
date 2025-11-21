@@ -15,7 +15,7 @@ const Table = ({ data = [], objkey = [], renderRow }) => {
           data.map((item, index) => renderRow(item, index))
         ) : (
           <tr>
-            <td colSpan={objkey.length}>No data available</td>
+            <td colSpan={objkey.length}><h2 id="msg">No data available</h2></td>
           </tr>
         )}
       </tbody>

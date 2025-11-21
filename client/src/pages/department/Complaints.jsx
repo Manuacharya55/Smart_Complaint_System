@@ -43,7 +43,7 @@ const Complaints = () => {
                   _id={curele._id}
                 />
               ))
-            : "No complaints yet"}
+            : <h2 id="msg">No data available</h2>}
         <Pagination setPage={setPage} page={page} users={complaint}/>
         </div>
       )}
