@@ -2,7 +2,6 @@
 
 A MERN stack application designed to streamline the process of reporting, managing, and resolving civic complaints. It features an intuitive user interface for citizens to lodge complaints and a robust admin panel for authorities to manage them efficiently.
 
-> **[LIVE DEMO LINK HERE]**
 > [![Live Demo](https://img.shields.io/badge/Live-Demo-green)](https://smart-complaint-system-dhdz.vercel.app/)
 
 ## ✨ Features
