@@ -52,7 +52,7 @@ A MERN stack application designed to streamline the process of reporting, managi
 
 1.  **Clone the repository**
     ```bash
-    git clone https://github.com/your-username/smart-complaint-system.git
+    git clone <repository-url>
     cd smart-complaint-system
     ```
 
