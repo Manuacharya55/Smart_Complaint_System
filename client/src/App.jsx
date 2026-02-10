@@ -1,8 +1,8 @@
 
 
-import AdminLayout from "./layouts/AdminLayout.jsx"
-import UserLayout from "./layouts/UserLayout.jsx";
-import DepartmentLayout from "./layouts/DepartmentLayout.jsx";
+import AdminLayout from "./layouts/AdminLayout";
+import UserLayout from "./layouts/UserLayout";
+import DepartmentLayout from "./layouts/DepartmentLayout";
 
 import Complaint from "./pages/admin/Complaint";
 import DashBoard from "./pages/admin/DashBoard";
