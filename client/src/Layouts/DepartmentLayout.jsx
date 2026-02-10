@@ -5,7 +5,7 @@ import { useAuth } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 const DepartmentLayout = ({ children }) => {
-  let routes = [
+  const routes = [
     {
       path: "/department-complaints",
       icon: <TbListDetails />,
@@ -18,22 +18,33 @@ const DepartmentLayout = ({ children }) => {
     },
   ];
 
-  const {user} = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
+  const [checked, setChecked] = React.useState(false);
 
-  if(user == null) return <h1>...loading</h1>
+  React.useEffect(() => {
+    if (!user) return;
 
-  if(user.role == "authority") return (
+    if (user.role !== "authority") {
+      navigate(-1, { replace: true });
+    } else {
+      setChecked(true);
+    }
+  }, [user, navigate]);
+
+  if (!checked) {
+    return <h1>...loading</h1>;
+  }
+
+  return (
     <div id="wrapper">
       <div id="dot"></div>
       <div id="sub-wrapper">
         <NavBar routes={routes} />
-      {children}
+        {children}
       </div>
     </div>
   );
-
-  return navigate(-1)
 };
 
 export default DepartmentLayout;

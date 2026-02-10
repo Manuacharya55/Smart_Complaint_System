@@ -33,7 +33,7 @@ export const addComplaint = async (req, res) => {
   const existingDepartment = await Department.findOne({
     name: data.department,
   });
-  
+
   if (!existingDepartment) {
     throw new ApiError(400, "Department not found");
   }
@@ -63,19 +63,32 @@ export const getComplaints = AsyncHandler(async (req, res) => {
   const limit = 12;
   const skip = (page - 1) * limit;
 
+  let query = {};
   if (req.user?.department == null || req.user.department == "public") {
-    const complaints = await Complaint.find({ user: req.user?._id }).limit(limit).skip(skip);
-    res
-      .status(200)
-      .json(new ApiSuccess(200, "Complaints fetched successfully", complaints));
+    query = { user: req.user?._id };
   } else {
-    const complaints = await Complaint.find({
-      department: req.user?.department,
-    }).limit(limit).skip(skip);;
-    res
-      .status(200)
-      .json(new ApiSuccess(200, "Complaints fetched successfully", complaints));
+    query = { department: req.user?.department };
   }
+
+  const complaints = await Complaint.find(query).limit(limit).skip(skip);
+  const totalDocs = await Complaint.countDocuments(query);
+  const totalPages = Math.ceil(totalDocs / limit);
+
+  const pagination = {
+    totalDocs,
+    limit,
+    totalPages,
+    page,
+    pagingCounter: skip + 1,
+    hasPrevPage: page > 1,
+    hasNextPage: page < totalPages,
+    prevPage: page > 1 ? page - 1 : null,
+    nextPage: page < totalPages ? page + 1 : null,
+  };
+
+  res
+    .status(200)
+    .json(new ApiSuccess(200, "Complaints fetched successfully", complaints, pagination));
 });
 
 export const getAllComplaints = AsyncHandler(async (req, res) => {
@@ -96,9 +109,25 @@ export const getAllComplaints = AsyncHandler(async (req, res) => {
     ])
     .limit(limit)
     .skip(skip);
+
+  const totalDocs = await Complaint.countDocuments();
+  const totalPages = Math.ceil(totalDocs / limit);
+
+  const pagination = {
+    totalDocs,
+    limit,
+    totalPages,
+    page,
+    pagingCounter: skip + 1,
+    hasPrevPage: page > 1,
+    hasNextPage: page < totalPages,
+    prevPage: page > 1 ? page - 1 : null,
+    nextPage: page < totalPages ? page + 1 : null,
+  };
+
   res
     .status(200)
-    .json(new ApiSuccess(200, "Complaints fetched successfully", complaints));
+    .json(new ApiSuccess(200, "Complaints fetched successfully", complaints, pagination));
 });
 export const getSingleComplaint = AsyncHandler(async (req, res) => {
   const { id } = req.params;

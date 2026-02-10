@@ -2,12 +2,13 @@ import React, { use, useState } from "react";
 import Image from "../../components/user/Image";
 import Banner from "../../components/Banner";
 import { handleUpload } from "../../services/ImageUpload";
-import { postRequest } from "../../services/Api";
+// import { postRequest } from "../../services/Api";
 import { useAuth } from "../../context/UserContext";
 import { useEffect } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import useComplaint from "../../hooks/useComplaint";
 const UploadComplaint = () => {
   const key = import.meta.env.VITE_KEY;
   const navigate = useNavigate();
@@ -21,21 +22,19 @@ const UploadComplaint = () => {
     longitude: "",
     latitude: "",
   });
-  const [disabled,setDisabled] = useState(false)
+  const [disabled, setDisabled] = useState(false);
   const { user } = useAuth();
+  const { createComplaint } = useComplaint();
 
   const handleSubmit = async (e) => {
-    setDisabled(true)
+    setDisabled(true);
     e.preventDefault();
-    const response = await postRequest("complaint/", user?.token, image);
+    const response = await createComplaint(image);
 
     if (response.success) {
-      toast.success(response.message);
       navigate("/user-complaints");
-    } else {
-      toast.error(response.message);
     }
-    setDisabled(false)
+    setDisabled(false);
   };
 
   const rev = async (longitude, latitude) => {

@@ -1,57 +1,49 @@
 import React, { useEffect, useState } from "react";
-import Banner from "../../components/Banner";
 import { useAuth } from "../../context/UserContext";
-import { getRequest } from "../../services/Api";
-import Table from "../../components/admin/Table";
-import Pagination from "../../components/Pagination";
 import Card from "../../components/user/Card";
+import Loader from "../../components/Loader";
+import Pagination from "../../components/Pagination";
+import useComplaint from "../../hooks/useComplaint";
 
 const Complaint = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [complaint, setComplaint] = useState([]);
-  const [page,setPage] = useState(1)
-
   const { user } = useAuth();
-
-  const fetchAllUsers = async () => {
-    if (!user?.token) return;
-
-    const response = await getRequest(`/complaint/all-complaints?page=${page}`, user?.token);
-    if (response.success) {
-      setComplaint(response.data);
-    } else {
-      toast.error(response.message);
-    }
-  };
+  const { complaints, isLoading, pagination, fetchComplaints } = useComplaint();
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     if (user?.token) {
-      fetchAllUsers();
-      setIsLoading(false);
+      // The admin complaint page typically fetches all complaints. 
+      // I'll need to verify if fetchComplaints supports filtering or if I need a new function in useComplaint.
+      // Looking at useComplaint.js (step 630), fetchComplaints calls `complaint?page=${page}`.
+      // But Complaint.jsx calls `/complaint/all-complaints?page=${page}`.
+      // I should update useComplaint.js to support this or create a new function.
+      fetchComplaints(page);
     }
-  }, [user?.token,page]);
+  }, [user?.token, page, fetchComplaints]);
 
   return (
     <div id="container">
       <h1 id="title">Complaints</h1>
       {isLoading ? (
-        "Loading"
+        <Loader />
       ) : (
         <div id="card-holder">
-          {complaint?.length > 0
-            ? complaint.map((curele) => (
-                <Card
-                  key={curele._id}
-                  img={curele.images[0]}
-                  problem={curele.problem}
-                  type={curele.type}
-                  status={curele.status}
-                  role={"admin"}
-                  _id={curele._id}
-                />
-              ))
-            : <h2 id="msg">No data available</h2>}
-        <Pagination setPage={setPage} page={page} users={complaint}/>
+          {complaints?.length > 0 ? (
+            complaints.map((curele) => (
+              <Card
+                key={curele._id}
+                img={curele.images[0]}
+                problem={curele.problem}
+                type={curele.type}
+                status={curele.status}
+                role={"admin"}
+                _id={curele._id}
+              />
+            ))
+          ) : (
+            <h2 id="msg">No data available</h2>
+          )}
+          <Pagination setPage={setPage} pagination={pagination} />
         </div>
       )}
     </div>

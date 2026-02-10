@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Table from "../../components/admin/Table";
+import DepartmentCard from "../../components/admin/DepartmentCard";
 import { useAuth } from "../../context/UserContext";
 import { useState } from "react";
 import {
@@ -10,29 +10,48 @@ import {
 } from "../../services/Api";
 import toast from "react-hot-toast";
 import {
-  TbPencil,
-  TbToggleLeftFilled,
-  TbToggleRightFilled,
+  TbPlus,
 } from "react-icons/tb";
 import Pagination from "../../components/Pagination";
+import Loader from "../../components/Loader";
+import Modal from "../../components/Modal";
 
 const Department = () => {
   const { user } = useAuth();
   const [data, setData] = useState({
-    name:'',
-    description:''
+    name: "",
+    description: "",
   });
   const [department, setDepartment] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isClicked, setIsClicked] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [id, setId] = useState();
-  const [page,setPage] = useState(1)
+  const [page, setPage] = useState(1);
 
   const handleChange = (e) => {
-    setData(prev => {
-      return {...prev,[e.target.name]:e.target.value}
+    setData((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
     });
+  };
+
+  const openModal = (editMode = false, item = null) => {
+    setIsEditing(editMode);
+    if (editMode && item) {
+      setData({ name: item.name, description: item.description });
+      setId(item._id);
+    } else {
+      setData({ name: "", description: "" });
+      setId(null);
+    }
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setData({ name: "", description: "" });
+    setIsEditing(false);
   };
 
   const handleSubmit = async (e) => {
@@ -47,47 +66,44 @@ const Department = () => {
     let response;
 
     if (isEditing) {
-      response = await patchRequest(
-        "department/",
-        user.token,
-        data,
-        id
-      );
+      response = await patchRequest("department/", user.token, data, id);
       if (response?.success) {
         setDepartment((prev) =>
-          prev.map((curEle) =>
-            curEle._id === id ? response.data : curEle
-          )
+          prev.map((curEle) => (curEle._id === id ? response.data : curEle))
         );
         toast.success(response.message);
-        setIsEditing(false);
-        setId(undefined);
-        setData("");
+        closeModal();
       } else {
         toast.error(response?.message);
       }
     } else {
-      response = await postRequest("department/", user.token,data);
+      response = await postRequest("department/", user.token, data);
       if (response?.success) {
         setDepartment((prev) => [...prev, response.data]);
         toast.success(response.message);
-        setData("");
+        closeModal();
       } else {
         toast.error(response?.message);
       }
     }
     setIsClicked(false);
-    setData({
-      name:'',
-      description:''
-    })
   };
+
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalPages: 1,
+    hasPrevPage: false,
+    hasNextPage: false,
+  });
 
   const fetchData = async () => {
     if (!user) return;
 
     const response = await getRequest(`department?page=${page}`, user?.token);
-    setDepartment(response.data);
+    if (response.success) {
+      setDepartment(response.data);
+      setPagination(response.pagination);
+    }
     setIsLoading(false);
   };
 
@@ -95,88 +111,99 @@ const Department = () => {
     if (user?.token) {
       fetchData();
     }
-  }, [user?.token]);
+  }, [user?.token, page]);
 
   const handleDelete = async (id) => {
     if (!user?.token) return;
 
     const response = await deleteRequest("department/", user?.token, id);
-    if(response.success){
+    if (response.success) {
       setDepartment((prev) =>
         prev.map((curEle) => (curEle._id == id ? response.data : curEle))
       );
-      toast.success(response.message)
-    }else{
-      toast.error(response.message)
+      toast.success(response.message);
+    } else {
+      toast.error(response.message);
     }
   };
 
-  const handleEdit = async (userid) => {
-    setIsEditing(true);
-    const data = department.filter((curEle) => curEle._id == userid)[0];
-    setData({
-      name:data.name,
-      description:data.description
-    });
-    setId(userid);
-  };
-
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div id="container">
-      <div id="add-department" className="background">
-        <h1>Manage Departments</h1>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={data.name}
-            onChange={handleChange}
-            placeholder="Enter Department Name"
-          />
-          <textarea type="text"
-            name="description"
-            id="description"
-            value={data.description}
-            onChange={handleChange}
-            placeholder="Enter Department Description"></textarea>
-          <button disabled={isClicked} type="submit">
-            {isClicked ? "Processing" : "Add Department"}
-          </button>
-        </form>
+      <div className="flex justify-between items-center mb-6 px-4">
+        <h1 id="title" style={{ marginBottom: 0, textAlign: "left" }}>
+          Departments
+        </h1>
+        <button
+          onClick={() => openModal(false)}
+          style={{
+            marginLeft: "auto"
+          }}
+        >
+          <TbPlus /> Add Department
+        </button>
       </div>
-      {isLoading ? (
-        "Loading"
-      ) : (
-        <Table
-          data={department}
-          objkey={["Department Id", "Name", "Description" ,"Employee Count", "Operation"]}
-          renderRow={(curEle, index) => (
-            <tr key={curEle._id}>
-              <td>{curEle._id}</td>
-              <td>{curEle.name}</td>
-              <td>{curEle.description}</td>
-              <td>{curEle.members?.length || 0}</td>
-              <td>
-                <div id="btn-holder">
-                  <button id="edit" onClick={() => handleEdit(curEle._id)}>
-                    <TbPencil />
-                  </button>
-                  <button id="delete" onClick={() => handleDelete(curEle._id)}>
-                    {curEle.isActive ? (
-                      <TbToggleLeftFilled />
-                    ) : (
-                      <TbToggleRightFilled />
-                    )}
-                  </button>
-                </div>
-              </td>
-            </tr>
-          )}
-        />
-      )}
 
-      <Pagination setPage={setPage} page={page} users={department}/>
+      <div className="department-card-grid">
+        {department.map((dept) => (
+          <DepartmentCard
+            key={dept._id}
+            department={dept}
+            onEdit={openModal}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
+
+      <Pagination setPage={setPage} pagination={pagination} />
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title={isEditing ? "Edit Department" : "Add Department"}
+      >
+        <div id="add-department" style={{ padding: 0, marginBottom: 0 }}>
+          <form
+            onSubmit={handleSubmit}
+            style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+          >
+            <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+              <label htmlFor="name" style={{ color: "var(---support-text)" }}>
+                Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                value={data.name}
+                onChange={handleChange}
+                placeholder="Enter Department Name"
+                required
+              />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+              <label
+                htmlFor="description"
+                style={{ color: "var(---support-text)" }}
+              >
+                Description
+              </label>
+              <textarea
+                name="description"
+                id="description"
+                value={data.description}
+                onChange={handleChange}
+                placeholder="Enter Department Description"
+                rows="4"
+              ></textarea>
+            </div>
+            <button disabled={isClicked} type="submit">
+              {isClicked ? "Processing..." : isEditing ? "Update" : "Add"}
+            </button>
+          </form>
+        </div>
+      </Modal>
     </div>
   );
 };

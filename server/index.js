@@ -20,12 +20,12 @@ import UserRouter from "./router/Users.route.js";
 import ComplaintRouter from "./router/Complaint.route.js";
 import DashboardRouter from "./router/Dashboard.route.js";
 
-app.use("/api/auth",AuthRouter)
-app.use("/api/department",DepartmentRouter)
-app.use("/api/place",PlaceRouter)
-app.use("/api/users",UserRouter)
-app.use("/api/complaint",ComplaintRouter)
-app.use("/api/dashboard",DashboardRouter)
+app.use("/api/auth", AuthRouter)
+app.use("/api/department", DepartmentRouter)
+app.use("/api/place", PlaceRouter)
+app.use("/api/users", UserRouter)
+app.use("/api/complaint", ComplaintRouter)
+app.use("/api/dashboard", DashboardRouter)
 
 
 app.use(GlobalErrorHandler)

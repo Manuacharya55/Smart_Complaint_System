@@ -1,27 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/UserContext";
-import Table from "../../components/admin/Table";
-import toast from "react-hot-toast";
-import {
-  deleteRequest,
-  getRequest,
-  patchRequest,
-  postRequest,
-} from "../../services/Api";
-import {
-  TbPencil,
-  TbToggleLeftFilled,
-  TbToggleRightFilled,
-} from "react-icons/tb";
+import PlaceCard from "../../components/admin/PlaceCard";
+import { TbPlus } from "react-icons/tb";
 import Pagination from "../../components/Pagination";
+import Loader from "../../components/Loader";
+import Modal from "../../components/Modal";
+import usePlace from "../../hooks/usePlace";
+import "../../styles/department.css";
 
 const Place = () => {
   const { user } = useAuth();
+  const {
+    places,
+    isLoading,
+    pagination,
+    fetchPlaces,
+    addPlace,
+    updatePlace,
+    deletePlace,
+  } = usePlace();
+
   const [data, setData] = useState("");
-  const [department, setDepartment] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [isClicked, setIsClicked] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [id, setId] = useState();
   const [page, setPage] = useState(1);
 
@@ -29,126 +31,108 @@ const Place = () => {
     setData(e.target.value);
   };
 
+  const openModal = (editMode = false, item = null) => {
+    setIsEditing(editMode);
+    if (editMode && item) {
+      setData(item.name);
+      setId(item._id);
+    } else {
+      setData("");
+      setId(null);
+    }
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setData("");
+    setIsEditing(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsClicked(true);
 
-    if (!user?.token) {
-      setIsClicked(false);
-      return;
-    }
-
-    let response;
-
+    let success = false;
     if (isEditing) {
-      response = await patchRequest("place/", user.token, { name: data }, id);
-      setIsEditing(false);
+      success = await updatePlace(id, { name: data });
     } else {
-      response = await postRequest("place/", user.token, { name: data });
+      success = await addPlace({ name: data });
     }
 
-    if (response?.success) {
-      toast.success(response.message);
-      if (isEditing) {
-        setDepartment((prev) =>
-          prev.map((curEle) =>
-            curEle._id === (response.data?._id || id) ? response.data : curEle
-          )
-        );
-      } else {
-        setDepartment((prev) => [...prev, response.data]);
-      }
-      setData("");
-    } else {
-      toast.error(response?.message);
+    if (success) {
+      closeModal();
     }
     setIsClicked(false);
   };
 
-  const fetchData = async () => {
-    if (!user) return;
-
-    const response = await getRequest(`place?page=${page}`, user?.token);
-    setDepartment(response.data);
-    setIsLoading(false);
-  };
-
   useEffect(() => {
     if (user?.token) {
-      fetchData();
+      fetchPlaces(page);
     }
-  }, [user?.token,page]);
+  }, [user?.token, page, fetchPlaces]);
 
-  const handleDelete = async (id) => {
-    if (!user?.token) return;
-
-    const response = await deleteRequest("place/", user?.token, id);
-
-    if (response.success) {
-      toast.success(response.message);
-      setDepartment((prev) =>
-        prev.map((curEle) => (curEle._id == id ? response.data : curEle))
-      );
-    } else {
-      toast.error(response.message);
-    }
-  };
-
-  const handleEdit = async (userid) => {
-    setIsEditing(true);
-    const data = department.filter((curEle) => curEle._id == userid)[0];
-    setData(data.name);
-    setId(userid);
-  };
-
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div id="container">
-      <div id="add-department" className="background">
-        <h1>Manage Place</h1>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={data}
-            onChange={handleChange}
-            placeholder="Enter Place Name"
-          />
-          <button disabled={isClicked} type="submit">
-            {isClicked ? "Processing" : "Add Place"}
-          </button>
-        </form>
+      <div className="flex justify-between items-center mb-6 px-4">
+        <h1 id="title" style={{ marginBottom: 0, textAlign: "left" }}>
+          Places
+        </h1>
+        <button
+          onClick={() => openModal(false)}
+          style={{
+            marginLeft: "auto",
+          }}
+        >
+          <TbPlus /> Add Place
+        </button>
       </div>
-      {isLoading ? (
-        "Loading"
-      ) : (
-        <Table
-          data={department}
-          objkey={["Place Id", "Name", "Operation"]}
-          renderRow={(curEle, index) => (
-            <tr key={curEle._id}>
-              <td>{curEle._id}</td>
-              <td>{curEle.name}</td>
-              <td>
-                <div id="btn-holder">
-                  <button id="edit" onClick={() => handleEdit(curEle._id)}>
-                    <TbPencil />
-                  </button>
-                  <button id="delete" onClick={() => handleDelete(curEle._id)}>
-                    {curEle.isActive ? (
-                      <TbToggleLeftFilled />
-                    ) : (
-                      <TbToggleRightFilled />
-                    )}
-                  </button>
-                </div>
-              </td>
-            </tr>
-          )}
-        />
-      )}
 
-      <Pagination setPage={setPage} page={page} users={department}/>
+      <div className="card-grid">
+        {places.map((place) => (
+          <PlaceCard
+            key={place._id}
+            place={place}
+            onEdit={openModal}
+            onDelete={deletePlace}
+          />
+        ))}
+      </div>
+
+      <Pagination setPage={setPage} page={page} pagination={pagination} />
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title={isEditing ? "Edit Place" : "Add Place"}
+      >
+        <div id="add-department" style={{ padding: 0, marginBottom: 0 }}>
+          <form
+            onSubmit={handleSubmit}
+            style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+          >
+            <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+              <label htmlFor="name" style={{ color: "var(---support-text)" }}>
+                Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                value={data}
+                onChange={handleChange}
+                placeholder="Enter Place Name"
+                required
+              />
+            </div>
+            <button disabled={isClicked} type="submit">
+              {isClicked ? "Processing..." : isEditing ? "Update" : "Add"}
+            </button>
+          </form>
+        </div>
+      </Modal>
     </div>
   );
 };

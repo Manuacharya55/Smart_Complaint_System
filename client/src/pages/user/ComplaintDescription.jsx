@@ -4,28 +4,21 @@ import { useAuth } from "../../context/UserContext";
 import { useEffect } from "react";
 // import { useState } from "react";
 import ImageCorousal from "../../components/department/ImageCorousal";
-import { toast } from "react-hot-toast";
 import useComplaint from "../../hooks/useComplaint";
 import { TbLocation } from "react-icons/tb";
 import MapComponent from "../../components/department/MapComponent";
 import Loader from "../../components/Loader";
 
-const SingleComplaint = () => {
+const ComplaintDescription = () => {
   const { id } = useParams();
   const { user } = useAuth();
-  const { complaint, isLoading, fetchComplaint, updateComplaintStatus } =
-    useComplaint();
+  const { complaint, isLoading, fetchComplaint } = useComplaint();
 
   useEffect(() => {
     if (user?.token) {
       fetchComplaint(id);
     }
   }, [user?.token, id]);
-
-  const handleChange = async (e) => {
-    await updateComplaintStatus(id, e.target.value);
-  };
-
   return isLoading ? (
     <Loader/>
   ) : (
@@ -65,8 +58,8 @@ const SingleComplaint = () => {
             Check Route in Map <TbLocation />
           </NavLink>
         </div>
-        <div id="update-status">
-          <h3>update status</h3>
+        {/* {<div id="update-status">
+          <h3>status</h3>
           <select
             name="status"
             id=""
@@ -77,15 +70,12 @@ const SingleComplaint = () => {
             <option value="Processing">processing</option>
             <option value="Resolved">Resolved</option>
           </select>
-        </div>
+        </div>} */}
       </div>
 
-      <MapComponent
-        lat={complaint.location?.latitude}
-        lng={complaint.location?.longitude}
-      />
+      <MapComponent lat={complaint.location?.latitude} lng={complaint.location?.longitude} />
     </div>
   );
 };
 
-export default SingleComplaint;
+export default ComplaintDescription;

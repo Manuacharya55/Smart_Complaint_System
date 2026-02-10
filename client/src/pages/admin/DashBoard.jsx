@@ -9,6 +9,7 @@ import Banner from "../../components/Banner";
 import { useAuth } from "../../context/UserContext";
 import { toast } from "react-hot-toast";
 import { getRequest } from "../../services/Api";
+import Loader from "../../components/Loader";
 
 const DashBoard = () => {
   const { user } = useAuth();
@@ -32,7 +33,7 @@ const DashBoard = () => {
   }, [user?.token]);
 
   return isLoading ? (
-    "Loading"
+   <Loader/>
   ) : (
     <div id="container">
       <Banner text={"Dashboard"} />

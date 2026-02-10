@@ -47,7 +47,7 @@ const Login = () => {
     } else {
       toast.error(response.message);
     }
-    setIsClicked(false);
+    // setIsClicked(false);
     setUser({
       email: "",
       password: "",

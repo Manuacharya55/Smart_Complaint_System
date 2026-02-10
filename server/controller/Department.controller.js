@@ -9,9 +9,24 @@ export const getAllDepartment = AsyncHandler(async (req, res) => {
   const skip = (page - 1) * limit;
   const department = await Department.find().limit(limit).skip(skip);
 
+  const totalDocs = await Department.countDocuments();
+  const totalPages = Math.ceil(totalDocs / limit);
+
+  const pagination = {
+    totalDocs,
+    limit,
+    totalPages,
+    page,
+    pagingCounter: skip + 1,
+    hasPrevPage: page > 1,
+    hasNextPage: page < totalPages,
+    prevPage: page > 1 ? page - 1 : null,
+    nextPage: page < totalPages ? page + 1 : null,
+  };
+
   res
     .status(200)
-    .send(new ApiSuccess(200, "Department Fetched Successfully", department));
+    .send(new ApiSuccess(200, "Department Fetched Successfully", department, pagination));
 });
 
 export const getSingleDepartment = AsyncHandler(async (req, res) => {
@@ -29,14 +44,14 @@ export const getSingleDepartment = AsyncHandler(async (req, res) => {
 });
 
 export const addDepartment = AsyncHandler(async (req, res) => {
-  const { name,description } = req.body;
+  const { name, description } = req.body;
   const existingDepartment = await Department.findOne({ name });
 
   if (existingDepartment) {
     throw new ApiError(400, "Department Already Exists");
   }
 
-  const department = await Department.create({ name,description });
+  const department = await Department.create({ name, description });
   res
     .status(200)
     .send(new ApiSuccess(200, "Department Added Successfully", department));

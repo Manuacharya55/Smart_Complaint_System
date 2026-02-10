@@ -8,80 +8,160 @@
 }
 
 #title {
-  font-size: 4rem;
+  font-size: var(---font-3xl);
   text-align: center;
   color: var(---heading-text-color);
+  margin-bottom: 30px;
 }
 
-table {
-  width: 100%;
-  background-color: var(---secondary-color);
-  border-radius: 10px;
-  overflow: hidden;
-  border-collapse: collapse;
-  text-align: left;
-  border: 1px solid var(---support-text);
+/* Grid Layout */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px 0;
 }
 
-thead {
-  background-color: var(---component-color);
+/* Card Styles */
+.department-card {
+  /* background-color: var(---secondary-color); */
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.department-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border-color: var(---component-color);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+
+.card-header h3 {
+  font-size: var(---font-lg);
   color: var(---heading-text-color);
-  width: 100%;
+  margin: 0;
+  font-weight: 600;
 }
 
-tbody {
-  color: var(---support-text);
-  width: 100%;
+.card-actions {
+  display: flex;
+  gap: 10px;
 }
 
-tbody tr {
-  border-bottom: 1px solid var(---support-text);
-}
-
-tbody tr:nth-child(odd) {
-  background-color: var(---secondary-color);
-}
-
-td {
-  padding: 0px 20px;
-}
-
-th {
-  padding: 15px 20px;
-}
-
-table button {
-  padding: 10px;
+.action-btn {
+  background: none;
   border: none;
-  border-radius: 8px;
-  margin-right: 10px;
-  color: var(---heading-text-color);
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-table button#edit {
-  background-color: var(---component-color);
+.edit-btn {
+  color: var(---support-text);
 }
 
-table button#delete {
-  background-color: red;
+.edit-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(---primary-color);
 }
 
-#btn-holder{
+.delete-btn.active {
+  color: #ef4444;
+  /* Red for deactivate */
+}
+
+.delete-btn.inactive {
+  color: #22c55e;
+  /* Green for activate */
+}
+
+.delete-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.card-body {
+  flex-grow: 1;
+}
+
+.description {
+  color: var(---support-text);
+  font-size: var(---font-md);
+  line-height: 1.5;
+  margin: 0;
+  max-height: 100px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(---component-color) transparent;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: var(---font-sm);
+  color: var(---support-text);
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge.active {
+  background-color: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.status-badge.inactive {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+#btn-holder {
   display: flex;
 }
 
-.btn-holder{
+.btn-holder {
   display: flex;
   justify-content: flex-start;
   width: 100%;
 }
 
-.btn-holder button{
+.btn-holder button {
   width: 150px;
 }
 
-.btn-holder button:disabled{
+.btn-holder button:disabled {
   background-color: grey;
+  cursor: not-allowed;
 }
 
 /* Add Department Section */
@@ -102,34 +182,35 @@ table button#delete {
   width: 100%;
   max-width: 700px;
   display: grid;
-  grid-template-columns: auto auto auto;
-
-  /* align-items: center; */
-  /* justify-content: center; */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  /* Responsive grid */
   gap: 20px;
-  flex-wrap: wrap;
-  /* border: 1px solid; */
 }
-
 
 #add-department h1 {
   text-align: center;
-  font-size: 3rem;
+  font-size: var(---font-2xl);
   color: var(---heading-text-color);
+  margin-bottom: 20px;
 }
 
-#add-department input,textarea {
+#add-department input,
+textarea {
   padding: 10px;
   background-color: transparent;
   border: 1px solid var(---support-text);
   border-radius: 8px;
   color: var(---heading-text-color);
   width: 100%;
+  font-size: var(---font-base);
 }
 
-textarea{
-  grid-column: span 2;
+textarea {
+  grid-column: 1 / -1;
+  /* Span full width */
+  resize: vertical;
 }
+
 #add-department select {
   padding: 10px;
   background-color: transparent;
@@ -137,6 +218,7 @@ textarea{
   border-radius: 8px;
   color: var(---heading-text-color);
   display: block;
+  font-size: var(---font-base);
 }
 
 #add-department option {
@@ -147,11 +229,15 @@ textarea{
 #add-department button {
   padding: 10px;
   background-color: var(---component-color);
-  color: var(---heading-text-color);
+  color: #000;
+  font-weight: 600;
   border-radius: 8px;
   border: none;
   width: 100%;
-  grid-column: span 3;
+  grid-column: 1 / -1;
+  /* Span full width */
+  cursor: pointer;
+  font-size: var(---font-base);
 }
 
 /* DashBoard _ CSS */
@@ -170,15 +256,18 @@ textarea{
   padding: 20px;
   border-radius: 10px;
   text-align: center;
+  /* Improve visibility */
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 #tile h1 {
-  font-size: 5rem;
+  font-size: var(---font-3xl);
   color: var(---heading-text-color);
+  margin-bottom: 10px;
 }
 
 #tile p {
-  font-size: 1.5rem;
+  font-size: var(---font-lg);
   color: var(---support-text);
 }
 
@@ -208,6 +297,7 @@ textarea{
 #dashbaord-links a {
   text-decoration: none;
 }
+
 #links p {
   font-size: 1.5rem;
   color: var(---support-text);
@@ -250,15 +340,17 @@ textarea{
 
 #image-preview {
   padding-top: 20px;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* justify-content: center; */
   gap: 20px;
 }
 
 #image-preview img {
-  max-width: 300px;
+  width: 100%;
   border-radius: 10px;
   margin-bottom: 20px;
+  height: 200px;
 }
 
 .active {
@@ -271,15 +363,16 @@ textarea{
   margin-bottom: 10px;
 }
 
-#location{
+#location {
   width: 100%;
   padding: 20px 0px;
 }
 
-#location a{
+#location a {
   text-decoration: none;
   color: var(---component-color);
 }
+
 #update-status {
   padding: 20px 0px;
   width: 100%;
@@ -295,6 +388,6 @@ textarea{
   border-radius: 5px;
 }
 
-#update-status option{
+#update-status option {
   background-color: var(---secondary-color);
 }

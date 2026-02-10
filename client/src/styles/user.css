@@ -10,16 +10,20 @@
 #image-upload {
   width: 200px;
   height: 200px;
-  border: 3px dashed var(---heading-text-color);
+  border: 3px dashed var(---support-text);
   border-radius: 20px;
   padding: 10px;
+  background-color: rgba(255, 255, 255, 0.03);
 }
 
-.error{
+.error {
   display: block;
-  color: red;
+  color: #ef4444;
   text-align: left;
+  font-size: var(---font-sm);
+  margin-top: 5px;
 }
+
 input[type="file"] {
   display: none;
 }
@@ -33,20 +37,28 @@ input[type="file"] {
 
 button {
   width: fit-content;
-  padding: 10px;
+  padding: 10px 20px;
   border: none;
   background-color: var(---component-color);
   border-radius: 8px;
-  color: var(---heading-text-color);
+  color: #000;
+  font-weight: 600;
+  font-size: var(---font-base);
   cursor: pointer;
   margin: 20px;
   display: block;
+  transition: opacity 0.2s;
 }
 
-form button{
+button:hover {
+  opacity: 0.9;
+}
+
+form button {
   margin: auto;
   margin-top: 20px;
 }
+
 #card-holder {
   width: 100%;
   display: flex;
@@ -63,6 +75,13 @@ form button{
   width: 280px;
   border-radius: 10px;
   color: var(---support-text);
+  /* background-color: var(---secondary-color); */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.2s;
+}
+
+#card:hover {
+  transform: translateY(-5px);
 }
 
 #card img {
@@ -71,24 +90,30 @@ form button{
   object-fit: cover;
 }
 
-#card #detail{
-    width: 100%;
-    padding: 15px;
-      display: flex;
+#card #detail {
+  width: 100%;
+  padding: 15px;
+  display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 #card #status {
-  padding: 10px;
+  padding: 5px 10px;
   width: fit-content;
-  color: var(---heading-text-color);
-  border-radius: 10px;
+  color: #fff;
+  border-radius: 6px;
+  font-size: var(---font-xs);
+  background-color: var(---component-color);
+  font-weight: 600;
 }
 
-#card a{
-    text-decoration: none;
-    color: var(---component-color);
+#card a {
+  text-decoration: none;
+  color: var(---component-color);
+  font-size: var(---font-sm);
 }
+
 @media (max-width: 768px) {
   #image-holder {
     flex-direction: column;

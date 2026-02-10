@@ -9,9 +9,24 @@ export const getAllPlace = AsyncHandler(async (req, res) => {
   const skip = (page - 1) * limit;
   const place = await Place.find().limit(limit).skip(skip);
 
+  const totalDocs = await Place.countDocuments();
+  const totalPages = Math.ceil(totalDocs / limit);
+
+  const pagination = {
+    totalDocs,
+    limit,
+    totalPages,
+    page,
+    pagingCounter: skip + 1,
+    hasPrevPage: page > 1,
+    hasNextPage: page < totalPages,
+    prevPage: page > 1 ? page - 1 : null,
+    nextPage: page < totalPages ? page + 1 : null,
+  };
+
   res
     .status(200)
-    .send(new ApiSuccess(200, "Place Fetched Successfully", place));
+    .send(new ApiSuccess(200, "Place Fetched Successfully", place, pagination));
 });
 
 export const getSinglePlace = AsyncHandler(async (req, res) => {
