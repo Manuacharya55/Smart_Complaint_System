@@ -1,7 +1,8 @@
-import NavBar from "./components/NavBar";
-import Image from "./components/user/Image";
-import AdminLayout from "./layouts/AdminLayout";
+
+
+import AdminLayout from "./layouts/AdminLayout"
 import UserLayout from "./layouts/UserLayout";
+import DepartmentLayout from "./layouts/DepartmentLayout";
 import Complaint from "./pages/admin/Complaint";
 import DashBoard from "./pages/admin/DashBoard";
 import Department from "./pages/admin/Department";
@@ -12,7 +13,6 @@ import Register from "./pages/Register";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UploadComplaint from "./pages/user/UploadComplaint";
 import UserComplaints from "./pages/user/UserComplaints";
-import DepartmentLayout from "./layouts/DepartmentLayout";
 import Complaints from "./pages/department/Complaints";
 import Complaintdetails from "./pages/admin/Complaintdetails";
 import SingleComplaint from "./pages/department/SingleComplaint";
