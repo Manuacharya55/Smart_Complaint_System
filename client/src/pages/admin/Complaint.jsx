@@ -12,14 +12,9 @@ const Complaint = () => {
 
   useEffect(() => {
     if (user?.token) {
-      // The admin complaint page typically fetches all complaints. 
-      // I'll need to verify if fetchComplaints supports filtering or if I need a new function in useComplaint.
-      // Looking at useComplaint.js (step 630), fetchComplaints calls `complaint?page=${page}`.
-      // But Complaint.jsx calls `/complaint/all-complaints?page=${page}`.
-      // I should update useComplaint.js to support this or create a new function.
-      fetchComplaints(page);
+      fetchComplaints(page,"all");
     }
-  }, [user?.token, page, fetchComplaints]);
+  }, [user?.token, page]);
 
   return (
     <div id="container">

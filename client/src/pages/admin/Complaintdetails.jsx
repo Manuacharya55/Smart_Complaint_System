@@ -25,7 +25,7 @@ const Complaintdetails = () => {
     if (user?.token) {
       fetchComplaint(id);
     }
-  }, [user?.token, id, fetchComplaint]);
+  }, [user?.token, id]);
 
   return isLoading ? (
     <Loader />

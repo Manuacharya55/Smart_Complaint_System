@@ -41,8 +41,10 @@ const useComplaint = () => {
     const fetchComplaint = async (id) => {
         setIsLoading(true);
         try {
+            console.log(id);
             if (!user?.token) return;
             const response = await getRequest(`complaint/${id}`, user.token);
+            console.log(response);
             if (response.success) {
                 setComplaint(response.data);
             } else {

@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./database/index.js";
 import { GlobalErrorHandler } from "./utils/GlobalError.js";
-// import { initSocket } from "./utils/Socket.js";
+
 import http from "http";
 dotenv.config();
 
@@ -31,9 +31,6 @@ app.use("/api/dashboard", DashboardRouter)
 app.use(GlobalErrorHandler)
 
 const server = http.createServer(app);
-
-// Initialize Socket.io
-// initSocket(server);
 
 connectDB()
   .then(() => {

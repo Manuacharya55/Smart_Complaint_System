@@ -47,11 +47,6 @@ const Login = () => {
     } else {
       toast.error(response.message);
     }
-    // setIsClicked(false);
-    setUser({
-      email: "",
-      password: "",
-    });
   };
 
   return (
