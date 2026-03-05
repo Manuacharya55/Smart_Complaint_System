@@ -15,6 +15,13 @@
   </a>
 </p>
 
+> **⚡ Try it instantly** — Click **"⚡ Fill Demo Data"** on the login page to automatically populate demo credentials and explore the app instantly — no sign-up needed!
+>
+> | Field    | Value            |
+> |----------|-----------------|
+> | Email    | `demo@gmail.com` |
+> | Password | `demo123`        |
+
 <p align="center">
   <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white" alt="React"/>
   <img src="https://img.shields.io/badge/Express-5-000000?logo=express&logoColor=white" alt="Express"/>

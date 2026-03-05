@@ -19,7 +19,13 @@ const Login = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
+    setValue,
   } = useForm({ resolver: zodResolver(loginSchema) });
+
+  const fillDemoData = () => {
+    setValue("email", "demo@gmail.com", { shouldValidate: true });
+    setValue("password", "demo123", { shouldValidate: true });
+  };
 
   const myFunc = async (data) => {
 
@@ -59,6 +65,7 @@ const Login = () => {
           onSubmit={handleSubmit(myFunc)}
         >
           <h1>Login </h1>
+
           <input
             type="email"
             placeholder="enter your email"
@@ -83,6 +90,28 @@ const Login = () => {
           </p>
           <button type="submit" disabled={isSubmitting}>
             {isSubmitting ? "processing" : "Login"}
+          </button>
+
+          <button
+            type="button"
+            onClick={fillDemoData}
+            style={{
+              background: "transparent",
+              color: "white",
+              border: "1.5px dashed #ccc",
+              borderRadius: "8px",
+              padding: "10px 16px",
+              cursor: "pointer",
+              fontWeight: "600",
+              fontSize: "0.9rem",
+              width: "100%",
+              letterSpacing: "0.3px",
+              transition: "border-color 0.2s, color 0.2s",
+            }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = "#f97316"; e.currentTarget.style.color = "#f97316"; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = "#ccc"; e.currentTarget.style.color = "inherit"; }}
+          >
+            ⚡ Fill Demo Data
           </button>
         </form>
       </div>

@@ -27,6 +27,12 @@ app.use("/api/users", UserRouter)
 app.use("/api/complaint", ComplaintRouter)
 app.use("/api/dashboard", DashboardRouter)
 
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "Hi from server"
+  })
+})
 
 app.use(GlobalErrorHandler)
 
